@@ -1,0 +1,64 @@
+name: infinix-backup-dev
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: backup
+      POSTGRES_PASSWORD: backup
+      POSTGRES_DB: infinix_backup
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U backup -d infinix_backup"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  # Optional: pgAdmin for DB management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - db
+    profiles:
+      - tools
+
+  # Example: test MySQL container for Docker backup testing
+  mysql-test:
+    image: mysql:8.0
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: backup
+      MYSQL_PASSWORD: backup
+    profiles:
+      - test-sources
+
+  # Example: test PostgreSQL container for Docker backup testing
+  postgres-test:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+      POSTGRES_DB: testdb
+    profiles:
+      - test-sources
+
+volumes:
+  postgres_dev_data:

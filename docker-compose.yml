@@ -1,0 +1,55 @@
+name: infinix-backup
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: infinix-backup:latest
+    restart: unless-stopped
+    ports:
+      - "${NUXT_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL:-}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
+      SESSION_SECRET: ${SESSION_SECRET:-}
+      NUXT_HOST: 0.0.0.0
+      NUXT_PORT: 3000
+    volumes:
+      - backup_data:/var/backups
+      - ./data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/host:ro   # host filesystem (read-only) — use /host/path/to/dir as source path
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - internal
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-backup}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-backup}
+      POSTGRES_DB: ${POSTGRES_DB:-infinix_backup}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-backup} -d ${POSTGRES_DB:-infinix_backup}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  backup_data:

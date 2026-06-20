@@ -1,0 +1,9 @@
+allowBuilds:
+  '@parcel/watcher': false
+  '@tailwindcss/oxide': false
+  cpu-features: true
+  esbuild: false
+  sharp: false
+  ssh2: true
+  unrs-resolver: false
+  vue-demi: false
