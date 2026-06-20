@@ -214,7 +214,10 @@
     "job": "Job",
     "completed": "Completed",
     "file_name": "File Name",
-    "download": "Download"
+    "download": "Download",
+    "deleted": "Backup deleted",
+    "delete_title": "Delete Backup",
+    "delete_msg": "This will permanently delete the backup record and the file from all destinations."
   },
   "webhooks": {
     "title": "Webhooks",

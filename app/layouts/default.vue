@@ -127,7 +127,9 @@ async function logout() {
     <UDashboardPanel>
       <UDashboardNavbar />
 
-      <slot />
+      <div class="overflow-y-auto">
+        <slot />
+      </div>
     </UDashboardPanel>
   </UDashboardGroup>
 </template>

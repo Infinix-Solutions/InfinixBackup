@@ -214,7 +214,10 @@
     "job": "Zadanie",
     "completed": "Ukończono",
     "file_name": "Nazwa pliku",
-    "download": "Pobierz"
+    "download": "Pobierz",
+    "deleted": "Kopia zapasowa usunięta",
+    "delete_title": "Usuń kopię zapasową",
+    "delete_msg": "Spowoduje to trwałe usunięcie rekordu kopii zapasowej oraz pliku ze wszystkich miejsc docelowych."
   },
   "webhooks": {
     "title": "Webhooki",

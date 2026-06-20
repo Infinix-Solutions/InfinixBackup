@@ -214,7 +214,10 @@
     "job": "Aufgabe",
     "completed": "Abgeschlossen",
     "file_name": "Dateiname",
-    "download": "Herunterladen"
+    "download": "Herunterladen",
+    "deleted": "Backup gelöscht",
+    "delete_title": "Backup löschen",
+    "delete_msg": "Dadurch werden der Backup-Datensatz und die Datei aus allen Zielen dauerhaft gelöscht."
   },
   "webhooks": {
     "title": "Webhooks",

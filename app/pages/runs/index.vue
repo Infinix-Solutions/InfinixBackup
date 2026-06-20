@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const { animateIn } = usePageAnimate()
+const toast = useToast()
 
 useHead({ title: `${t('runs.title')} — Infinix Backup` })
 
@@ -38,6 +39,28 @@ const statusIconClass: Record<string, string> = {
 
 const search = ref('')
 const statusFilter = ref<'all' | RunStatus>('all')
+const deleteTarget = ref<ApiRun | null>(null)
+const deleting = ref(false)
+
+async function confirmDelete(run: ApiRun) {
+  deleteTarget.value = run
+}
+
+async function deleteRun() {
+  if (!deleteTarget.value) return
+  deleting.value = true
+  try {
+    await $fetch(`/api/runs/${deleteTarget.value.id}`, { method: 'DELETE' })
+    toast.add({ title: t('runs.deleted'), color: 'success', icon: 'i-lucide-check-circle' })
+    deleteTarget.value = null
+    refresh()
+  } catch (err: unknown) {
+    const msg = (err as { data?: { message?: string } })?.data?.message || 'Delete failed'
+    toast.add({ title: msg, color: 'error' })
+  } finally {
+    deleting.value = false
+  }
+}
 
 const statusTabs: Array<{ label: string; value: 'all' | RunStatus }> = [
   { label: t('common.all'), value: 'all' },
@@ -220,9 +243,31 @@ onMounted(() => {
                 variant="ghost"
               />
             </UTooltip>
+            <UTooltip :text="t('common.delete')">
+              <UButton
+                icon="i-lucide-trash-2"
+                size="xs"
+                color="error"
+                variant="ghost"
+                @click="confirmDelete(row.original as ApiRun)"
+              />
+            </UTooltip>
           </div>
         </template>
       </UTable>
     </UCard>
+
+    <UModal v-model:open="deleteTarget" :title="t('runs.delete_title')">
+      <template #body>
+        <p class="text-sm text-muted">{{ t('runs.delete_msg') }}</p>
+        <p v-if="deleteTarget?.fileName" class="mt-2 text-xs font-mono text-muted bg-elevated rounded px-2 py-1">{{ deleteTarget.fileName }}</p>
+      </template>
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <UButton color="neutral" variant="ghost" size="sm" @click="deleteTarget = null">{{ t('common.cancel') }}</UButton>
+          <UButton color="error" size="sm" :loading="deleting" @click="deleteRun">{{ t('common.delete') }}</UButton>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>
