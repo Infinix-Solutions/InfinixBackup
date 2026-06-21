@@ -55,7 +55,6 @@ async function initScheduler() {
 }
 
 function initRetentionSchedule() {
-  // Run retention cleanup every day at 3:30 AM
   globalThis.__retentionTask = cron.schedule('30 3 * * *', async () => {
     console.log('[scheduler] Running daily retention cleanup...')
     try {

@@ -42,7 +42,6 @@ export default defineEventHandler(async () => {
       .limit(10)
   ])
 
-  // Load destination names per job for recent runs
   const recentJobIds = [...new Set(recentRuns.map(r => r.jobId))]
   const destNameRows = recentJobIds.length > 0
     ? await db

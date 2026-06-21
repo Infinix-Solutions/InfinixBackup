@@ -39,7 +39,6 @@ export default defineEventHandler(async (event) => {
 
   if (!row) throw createError({ statusCode: 404, message: 'SSH connection not found' })
 
-  // Fire-and-forget — don't block the HTTP response
   if (password) {
     const connPort = port || 22
     installPublicKey({ host, port: connPort, username, password }, existing.publicKey)

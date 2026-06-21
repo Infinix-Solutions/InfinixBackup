@@ -33,7 +33,6 @@ export default defineEventHandler(async (event) => {
     updatedAt: sshConnections.updatedAt
   })
 
-  // Fire-and-forget — don't block the HTTP response
   if (password) {
     const connPort = port || 22
     installPublicKey({ host, port: connPort, username, password }, publicKey)

@@ -16,7 +16,6 @@ export default defineEventHandler(async (event) => {
 
   const db = useDB()
 
-  // Prevent deleting the last admin
   const [{ adminCount = 0 } = {}] = await db
     .select({ adminCount: count() })
     .from(users)

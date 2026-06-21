@@ -25,7 +25,6 @@ export async function uploadToSftp(
     try {
       await sftp.mkdir(config.remotePath, true)
     } catch {
-      // Directory may already exist
     }
 
     let sizeBytes = 0

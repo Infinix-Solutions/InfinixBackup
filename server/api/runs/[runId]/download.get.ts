@@ -30,7 +30,6 @@ export default defineEventHandler(async (event) => {
     .innerJoin(backupDestinations, eq(jobDestinations.destinationId, backupDestinations.id))
     .where(eq(jobDestinations.jobId, run.jobId))
 
-  // Narrow to successful destinations (or a specific one if requested)
   const successIds = run.destinationResults
     ?.filter(r => r.status === 'success')
     .map(r => r.id)

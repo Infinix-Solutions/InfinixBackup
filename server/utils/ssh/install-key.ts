@@ -19,7 +19,6 @@ export async function installPublicKey(
 ): Promise<void> {
   logger.info(CAT, `Starting key installation → ${config.username}@${config.host}:${config.port}`)
 
-  // 1. TCP reachability check first
   logger.debug(CAT, `TCP pre-check ${config.host}:${config.port}`)
   try {
     await testTcp(config.host, config.port, 5000)
@@ -30,7 +29,6 @@ export async function installPublicKey(
     throw new Error(msg)
   }
 
-  // 2. SSH auth + key install
   return new Promise((resolve, reject) => {
     const conn = new Client()
     let authMethod = 'unknown'
@@ -63,7 +61,7 @@ export async function installPublicKey(
         let exitCode: number | null = null
         channel.stderr.on('data', (d: Buffer) => { stderr += d.toString() })
         channel.on('exit', (code: number | null) => { exitCode = code })
-        channel.resume() // drain stdout so 'close' fires
+        channel.resume()
         channel.on('close', () => {
           conn.end()
           if (exitCode !== 0) {
@@ -83,7 +81,6 @@ export async function installPublicKey(
       const msg = err.message || String(err)
       logger.error(CAT, `SSH error: ${msg}`)
 
-      // Provide human-readable hints for common errors
       if (msg.includes('Authentication failed') || msg.includes('All configured authentication methods failed')) {
         reject(new Error(`Authentication failed — check password, or ensure PasswordAuthentication/KbdInteractiveAuthentication is enabled in /etc/ssh/sshd_config on the server`))
       } else if (msg.includes('ECONNREFUSED')) {

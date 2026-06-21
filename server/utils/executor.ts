@@ -179,14 +179,12 @@ export async function executeBackupJob(jobId: string): Promise<string> {
 
     log(`Output file: ${fileName}`);
 
-    // Create backup to temp file first (needed to upload to multiple destinations)
     const backupStream = createBackupStream(source, job.compression as CompressionType, sshConfig);
     await pipeline(backupStream, createWriteStream(tempPath));
     const fileStats = await stat(tempPath);
     const sizeBytes = Number(fileStats.size);
     log(`Backup created: ${sizeBytes} bytes`);
 
-    // Upload to all destinations — continue on failure, track per-destination results
     const destResults: RunDestinationResult[] = [];
     for (const dest of destinations) {
       log(`Uploading to ${dest.name} (${dest.type})...`);

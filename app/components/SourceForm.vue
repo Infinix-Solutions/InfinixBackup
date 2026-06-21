@@ -12,7 +12,6 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-// SSH connections for server selector
 const { data: sshConnectionsList } = useFetch<ApiSshConnection[]>('/api/ssh-connections', { default: () => [] })
 const sshServerOptions = computed(() => [
   { label: t('ssh.form.server_local'), value: null },
@@ -20,7 +19,6 @@ const sshServerOptions = computed(() => [
 ])
 const selectedSshId = ref<string | null>(props.initial?.sshConnectionId || null)
 
-// Probe result for selected SSH server
 const probing = ref(false)
 const probe = ref<SshProbeResult | null>(null)
 
@@ -47,7 +45,6 @@ watch(selectedSshId, (id) => {
   if (mounted) form.config = {}
 })
 
-// Local docker containers (only used when no SSH selected)
 const { data: dockerContainerList } = useFetch<Array<{ name: string; image: string }>>('/api/docker/containers', {
   default: () => []
 })
