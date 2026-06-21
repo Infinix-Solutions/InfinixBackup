@@ -18,6 +18,7 @@ services:
       - ./data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /:/host:ro   # host filesystem (read-only) — use /host/path/to/dir as source path
+      - ssh_keys:/home/nuxt/.ssh:ro
     depends_on:
       db:
         condition: service_healthy
@@ -49,3 +50,4 @@ networks:
 volumes:
   postgres_data:
   backup_data:
+  ssh_keys:
