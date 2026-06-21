@@ -88,7 +88,9 @@ async function copyKey() {
   if (!connection.value) return
   await navigator.clipboard.writeText(connection.value.publicKey)
   copied.value = true
-  setTimeout(() => { copied.value = false }, 2000)
+  setTimeout(() => {
+    copied.value = false
+  }, 2000)
   toast.add({ title: t('ssh.public_key_copied'), color: 'success', icon: 'i-lucide-copy-check' })
 }
 

@@ -72,8 +72,13 @@ export function sshExecString(command: string, config: SshConfig): Promise<strin
     conn.on('ready', () => {
       logger.debug('ssh:exec', `Connected ${tag} — running: ${command.slice(0, 120)}`)
       conn.exec(command, (err, channel) => {
-        if (err) { conn.end(); return reject(err) }
-        channel.on('data', (d: Buffer) => { output += d.toString() })
+        if (err) {
+          conn.end()
+          return reject(err)
+        }
+        channel.on('data', (d: Buffer) => {
+          output += d.toString()
+        })
         channel.stderr.on('data', (d: Buffer) => {
           logger.debug('ssh:exec', `[stderr] ${d.toString().trim()}`)
         })
@@ -82,7 +87,10 @@ export function sshExecString(command: string, config: SshConfig): Promise<strin
           if (code !== 0 && !output) reject(new Error(`Command failed with code ${code}`))
           else resolve(output)
         })
-        channel.on('error', (e: Error) => { conn.end(); reject(e) })
+        channel.on('error', (e: Error) => {
+          conn.end()
+          reject(e)
+        })
       })
     })
 

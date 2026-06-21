@@ -23,7 +23,10 @@ const probing = ref(false)
 const probe = ref<SshProbeResult | null>(null)
 
 async function runProbe(sshId: string) {
-  if (!sshId) { probe.value = null; return }
+  if (!sshId) {
+    probe.value = null
+    return
+  }
   probing.value = true
   try {
     probe.value = await $fetch<SshProbeResult>(`/api/ssh-connections/${sshId}/probe`, { method: 'POST' })
@@ -87,9 +90,6 @@ const sourceTypes = computed(() => {
   )
 }) as ComputedRef<{ label: string, value: string, icon: string }[]>
 
-const isDockerDb = computed(() =>
-  ['docker_postgresql', 'docker_mysql', 'docker_mongodb'].includes(form.type)
-)
 const isDocker = computed(() =>
   ['docker_postgresql', 'docker_mysql', 'docker_mongodb', 'docker_folder'].includes(form.type)
 )
@@ -97,7 +97,9 @@ const needsDb = computed(() =>
   !['files', 'docker_folder'].includes(form.type)
 )
 
-watch(() => form.type, () => { form.config = {} })
+watch(() => form.type, () => {
+  form.config = {}
+})
 
 function handleSubmit() {
   if (!form.config.port && ['postgresql', 'mysql', 'docker_postgresql', 'docker_mysql'].includes(form.type)) {

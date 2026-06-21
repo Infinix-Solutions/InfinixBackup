@@ -41,7 +41,9 @@ export function createPostgresBackup(config: PostgresConfig, compression: Compre
     const gzip = createGzip()
     proc.stdout.pipe(gzip)
     proc.on('error', err => gzip.destroy(err))
-    proc.on('close', (code) => { if (code !== 0) gzip.destroy(new Error(`pg_dump exited with code ${code}`)) })
+    proc.on('close', (code) => {
+      if (code !== 0) gzip.destroy(new Error(`pg_dump exited with code ${code}`))
+    })
     return gzip
   }
   proc.on('error', err => console.error('[pg_dump error]', err))
@@ -57,5 +59,10 @@ export async function testPostgresConnection(config: PostgresConfig): Promise<vo
     connectionTimeoutMillis: 5000, max: 1
   })
   const client = await pool.connect()
-  try { await client.query('SELECT 1') } finally { client.release(); await pool.end() }
+  try {
+    await client.query('SELECT 1')
+  } finally {
+    client.release()
+    await pool.end()
+  }
 }

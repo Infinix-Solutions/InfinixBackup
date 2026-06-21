@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const { t } = useI18n()
 const toast = useToast()
 
 useHead({ title: 'Server Logs — Infinix Backup' })
@@ -43,11 +42,6 @@ const filteredLogs = computed(() => {
   })
 })
 
-const categories = computed(() => {
-  const cats = new Set(logs.value.map(l => l.category))
-  return Array.from(cats).sort()
-})
-
 async function fetchLogs(since?: number) {
   try {
     const params = since ? `?sinceId=${since}&limit=500` : '?limit=500'
@@ -61,6 +55,7 @@ async function fetchLogs(since?: number) {
     if (data.length > 0) lastId.value = data.at(-1)!.id
     if (autoScroll.value) scrollToBottom()
   } catch {
+    // fetch failed silently
   }
 }
 
@@ -92,7 +87,9 @@ onUnmounted(() => {
   if (pollTimer) clearInterval(pollTimer)
 })
 
-watch(autoScroll, (v) => { if (v) scrollToBottom() })
+watch(autoScroll, (v) => {
+  if (v) scrollToBottom()
+})
 </script>
 
 <template>

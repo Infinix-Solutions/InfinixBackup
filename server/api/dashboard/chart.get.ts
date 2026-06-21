@@ -1,4 +1,4 @@
-import { sql, eq, gte, and } from 'drizzle-orm'
+import { sql, gte, and } from 'drizzle-orm'
 import { backupRuns } from '../../database/schema'
 
 export default defineEventHandler(async () => {

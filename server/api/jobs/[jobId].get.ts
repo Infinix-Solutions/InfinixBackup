@@ -1,5 +1,5 @@
 import { eq } from 'drizzle-orm'
-import { backupJobs, backupDestinations, jobDestinations } from '../../database/schema'
+import { backupJobs } from '../../database/schema'
 
 export default defineEventHandler(async (event) => {
   const jobId = getRouterParam(event, 'jobId')

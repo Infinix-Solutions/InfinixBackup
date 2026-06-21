@@ -38,7 +38,9 @@ export function createMysqlBackup(config: MysqlConfig, compression: CompressionT
     const gzip = createGzip()
     proc.stdout.pipe(gzip)
     proc.on('error', err => gzip.destroy(err))
-    proc.on('close', (code) => { if (code !== 0) gzip.destroy(new Error(`mysqldump exited with code ${code}`)) })
+    proc.on('close', (code) => {
+      if (code !== 0) gzip.destroy(new Error(`mysqldump exited with code ${code}`))
+    })
     return gzip
   }
   return proc.stdout

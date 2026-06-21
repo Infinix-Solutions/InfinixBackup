@@ -61,7 +61,7 @@ export default defineNuxtConfig({
     /**
      * Ignore a next line, beacause a Sentry SDK don't implement in config types a "url" param for Self-Hosted instances
      */
-    // @ts-ignore-next-line
+    // @ts-expect-error — Sentry SDK doesn't include `url` in config types for self-hosted instances
     url: 'https://sentry.infinix-solutions.com/'
   }
 })

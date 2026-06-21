@@ -30,7 +30,9 @@ export function createMongoBackup(config: MongoConfig, compression: CompressionT
     const gzip = createGzip()
     proc.stdout.pipe(gzip)
     proc.on('error', err => gzip.destroy(err))
-    proc.on('close', (code) => { if (code !== 0) gzip.destroy(new Error(`mongodump exited with code ${code}`)) })
+    proc.on('close', (code) => {
+      if (code !== 0) gzip.destroy(new Error(`mongodump exited with code ${code}`))
+    })
     return gzip
   }
   proc.on('error', err => console.error('[mongodump error]', err))
@@ -64,7 +66,9 @@ export function createDockerMongoBackup(config: DockerMongoConfig, compression: 
     const gzip = createGzip()
     proc.stdout.pipe(gzip)
     proc.on('error', err => gzip.destroy(err))
-    proc.on('close', (code) => { if (code !== 0) gzip.destroy(new Error(`docker mongodump exited with code ${code}`)) })
+    proc.on('close', (code) => {
+      if (code !== 0) gzip.destroy(new Error(`docker mongodump exited with code ${code}`))
+    })
     return gzip
   }
   return proc.stdout
@@ -74,9 +78,17 @@ export async function testMongoConnection(config: MongoConfig): Promise<void> {
   await new Promise<void>((resolve, reject) => {
     const proc = spawn('mongosh', ['--uri', config.uri, '--eval', 'db.adminCommand("ping")'])
     let stderr = ''
-    proc.stderr.on('data', (d: Buffer) => { stderr += d.toString() })
-    proc.on('close', (code) => { if (code !== 0) reject(new Error(`MongoDB connection failed: ${stderr}`)); else resolve() })
+    proc.stderr.on('data', (d: Buffer) => {
+      stderr += d.toString()
+    })
+    proc.on('close', (code) => {
+      if (code !== 0) reject(new Error(`MongoDB connection failed: ${stderr}`))
+      else resolve()
+    })
     proc.on('error', reject)
-    setTimeout(() => { proc.kill(); reject(new Error('Connection timeout')) }, 8000)
+    setTimeout(() => {
+      proc.kill()
+      reject(new Error('Connection timeout'))
+    }, 8000)
   })
 }

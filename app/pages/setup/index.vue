@@ -52,12 +52,16 @@ async function copyKey(value: string, which: 'enc' | 'sess') {
     await navigator.clipboard.writeText(value)
     if (which === 'enc') {
       encKeyCopied.value = true
-      setTimeout(() => { encKeyCopied.value = false }, 2000)
+      setTimeout(() => {
+        encKeyCopied.value = false
+      }, 2000)
     } else {
       sessKeyCopied.value = true
-      setTimeout(() => { sessKeyCopied.value = false }, 2000)
+      setTimeout(() => {
+        sessKeyCopied.value = false
+      }, 2000)
     }
-  } catch (_e) { /* clipboard unavailable */ }
+  } catch { /* clipboard unavailable */ }
 }
 
 const installing = ref(false)
@@ -116,7 +120,9 @@ async function saveAndRestart() {
 let pollTimer: ReturnType<typeof setInterval> | null = null
 
 function pollUntilReady() {
-  const tick = setInterval(() => { restartSeconds.value++ }, 1000)
+  const tick = setInterval(() => {
+    restartSeconds.value++
+  }, 1000)
   pollTimer = setInterval(async () => {
     restartAttempts.value++
     try {
@@ -128,7 +134,7 @@ function pollUntilReady() {
         saving.value = false
         await runInstall()
       }
-    } catch (_e) { /* server restarting */ }
+    } catch { /* server restarting */ }
   }, 2500)
 }
 

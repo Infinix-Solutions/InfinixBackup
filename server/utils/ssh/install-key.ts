@@ -7,9 +7,19 @@ const CAT = 'ssh:install'
 function testTcp(host: string, port: number, timeoutMs = 5000): Promise<void> {
   return new Promise((resolve, reject) => {
     const sock = createConnection({ host, port })
-    const t = setTimeout(() => { sock.destroy(); reject(new Error(`TCP timeout — ${host}:${port} not reachable in ${timeoutMs / 1000}s`)) }, timeoutMs)
-    sock.on('connect', () => { clearTimeout(t); sock.destroy(); resolve() })
-    sock.on('error', (e) => { clearTimeout(t); reject(new Error(`TCP error — ${e.message}`)) })
+    const t = setTimeout(() => {
+      sock.destroy()
+      reject(new Error(`TCP timeout — ${host}:${port} not reachable in ${timeoutMs / 1000}s`))
+    }, timeoutMs)
+    sock.on('connect', () => {
+      clearTimeout(t)
+      sock.destroy()
+      resolve()
+    })
+    sock.on('error', (e) => {
+      clearTimeout(t)
+      reject(new Error(`TCP error — ${e.message}`))
+    })
   })
 }
 
@@ -26,7 +36,7 @@ export async function installPublicKey(
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     logger.error(CAT, `TCP failed: ${msg}`)
-    throw new Error(msg)
+    throw new Error(msg, { cause: e })
   }
 
   return new Promise((resolve, reject) => {
@@ -59,8 +69,12 @@ export async function installPublicKey(
         }
         let stderr = ''
         let exitCode: number | null = null
-        channel.stderr.on('data', (d: Buffer) => { stderr += d.toString() })
-        channel.on('exit', (code: number | null) => { exitCode = code })
+        channel.stderr.on('data', (d: Buffer) => {
+          stderr += d.toString()
+        })
+        channel.on('exit', (code: number | null) => {
+          exitCode = code
+        })
         channel.resume()
         channel.on('close', () => {
           conn.end()
@@ -72,7 +86,10 @@ export async function installPublicKey(
             resolve()
           }
         })
-        channel.on('error', (e: Error) => { conn.end(); reject(e) })
+        channel.on('error', (e: Error) => {
+          conn.end()
+          reject(e)
+        })
       })
     })
 

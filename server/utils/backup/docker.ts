@@ -162,7 +162,9 @@ export async function testDockerContainer(containerName: string): Promise<void> 
   await new Promise<void>((resolve, reject) => {
     const proc = spawn('docker', ['inspect', '--format', '{{.State.Running}}', containerName])
     let output = ''
-    proc.stdout.on('data', (d: Buffer) => { output += d.toString() })
+    proc.stdout.on('data', (d: Buffer) => {
+      output += d.toString()
+    })
     proc.on('close', (code) => {
       if (code !== 0) return reject(new Error(`Container "${containerName}" not found`))
       if (output.trim() !== 'true') return reject(new Error(`Container "${containerName}" is not running`))

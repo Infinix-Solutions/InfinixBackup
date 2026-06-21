@@ -34,7 +34,9 @@ async function runNow() {
     const msg = (err as { data?: { message?: string } })?.data?.message || t('common.error')
     toast.add({ title: t('common.error'), description: msg, color: 'error' })
   } finally {
-    setTimeout(() => { running.value = false }, 3000)
+    setTimeout(() => {
+      running.value = false
+    }, 3000)
   }
 }
 

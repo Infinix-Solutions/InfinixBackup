@@ -30,10 +30,18 @@ export default defineEventHandler(async (event) => {
       const cfg = decryptConfig(dest.config as Record<string, unknown>)
       try {
         switch (dest.type) {
-          case 's3': await deleteFromS3(run.fileName, cfg as unknown as S3Config); break
-          case 'ftp': await deleteFromFtp(run.fileName, cfg as unknown as FtpConfig); break
-          case 'sftp': await deleteFromSftp(run.fileName, cfg as unknown as SftpConfig); break
-          case 'local': deleteFromLocal(run.fileName, cfg as unknown as LocalConfig); break
+          case 's3':
+            await deleteFromS3(run.fileName, cfg as unknown as S3Config)
+            break
+          case 'ftp':
+            await deleteFromFtp(run.fileName, cfg as unknown as FtpConfig)
+            break
+          case 'sftp':
+            await deleteFromSftp(run.fileName, cfg as unknown as SftpConfig)
+            break
+          case 'local':
+            deleteFromLocal(run.fileName, cfg as unknown as LocalConfig)
+            break
         }
         logger.info('runs:delete', `Deleted ${run.fileName} from ${dest.type}`)
       } catch (err) {
