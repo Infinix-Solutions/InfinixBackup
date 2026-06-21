@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
     ?.filter(r => r.status === 'success')
     .map(r => r.id)
 
-  const candidates = allDestinations.filter(d => {
+  const candidates = allDestinations.filter((d) => {
     if (destinationId) return d.id === destinationId
     if (successIds?.length) return successIds.includes(d.id)
     return true

@@ -77,12 +77,28 @@ function handleSubmit(_e?: FormSubmitEvent<JobFormData>) {
 </script>
 
 <template>
-  <UForm :state="form" class="space-y-6" @submit="handleSubmit">
-    <UFormField :label="t('jobs.form.name')" name="name" required>
-      <UInput v-model="form.name" :placeholder="t('jobs.form.name_ph')" class="w-full" />
+  <UForm
+    :state="form"
+    class="space-y-6"
+    @submit="handleSubmit"
+  >
+    <UFormField
+      :label="t('jobs.form.name')"
+      name="name"
+      required
+    >
+      <UInput
+        v-model="form.name"
+        :placeholder="t('jobs.form.name_ph')"
+        class="w-full"
+      />
     </UFormField>
 
-    <UFormField :label="t('jobs.form.source')" name="sourceId" required>
+    <UFormField
+      :label="t('jobs.form.source')"
+      name="sourceId"
+      required
+    >
       <USelect
         v-model="form.sourceId"
         :items="sourceItems"
@@ -93,12 +109,26 @@ function handleSubmit(_e?: FormSubmitEvent<JobFormData>) {
       />
     </UFormField>
 
-    <UFormField :label="t('jobs.form.destinations')" name="destinationIds" required :hint="t('jobs.form.destinations_hint')">
-      <div v-if="destinations.length === 0" class="text-sm text-muted py-2">
+    <UFormField
+      :label="t('jobs.form.destinations')"
+      name="destinationIds"
+      required
+      :hint="t('jobs.form.destinations_hint')"
+    >
+      <div
+        v-if="destinations.length === 0"
+        class="text-sm text-muted py-2"
+      >
         {{ t('jobs.form.no_destinations') }}
-        <NuxtLink to="/destinations/new" class="text-primary-500 hover:underline">{{ t('jobs.form.add_destination') }}</NuxtLink>
+        <NuxtLink
+          to="/destinations/new"
+          class="text-primary-500 hover:underline"
+        >{{ t('jobs.form.add_destination') }}</NuxtLink>
       </div>
-      <div v-else class="space-y-2">
+      <div
+        v-else
+        class="space-y-2"
+      >
         <label
           v-for="dest in destinations"
           :key="dest.id"
@@ -113,7 +143,10 @@ function handleSubmit(_e?: FormSubmitEvent<JobFormData>) {
             @click.prevent
           />
           <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-elevated">
-            <UIcon :name="DESTINATION_TYPE_ICONS[dest.type] || 'i-lucide-hard-drive'" class="h-3.5 w-3.5 text-muted" />
+            <UIcon
+              :name="DESTINATION_TYPE_ICONS[dest.type] || 'i-lucide-hard-drive'"
+              class="h-3.5 w-3.5 text-muted"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-sm font-medium leading-none">{{ dest.name }}</p>
@@ -152,7 +185,10 @@ function handleSubmit(_e?: FormSubmitEvent<JobFormData>) {
     </UFormField>
 
     <div class="grid grid-cols-2 gap-4">
-      <UFormField :label="t('jobs.form.compression')" name="compression">
+      <UFormField
+        :label="t('jobs.form.compression')"
+        name="compression"
+      >
         <USelect
           v-model="form.compression"
           :items="compressionOptions"
@@ -161,25 +197,55 @@ function handleSubmit(_e?: FormSubmitEvent<JobFormData>) {
           class="w-full"
         />
       </UFormField>
-      <UFormField :label="t('jobs.form.prefix')" name="filenamePrefix">
-        <UInput v-model="form.filenamePrefix" placeholder="backup" class="w-full" />
+      <UFormField
+        :label="t('jobs.form.prefix')"
+        name="filenamePrefix"
+      >
+        <UInput
+          v-model="form.filenamePrefix"
+          placeholder="backup"
+          class="w-full"
+        />
       </UFormField>
     </div>
 
     <fieldset class="rounded-lg border border-default p-4 space-y-3">
-      <legend class="px-1 text-sm font-medium">{{ t('jobs.form.retention') }}</legend>
-      <p class="text-xs text-muted">{{ t('jobs.form.retention_hint') }}</p>
+      <legend class="px-1 text-sm font-medium">
+        {{ t('jobs.form.retention') }}
+      </legend>
+      <p class="text-xs text-muted">
+        {{ t('jobs.form.retention_hint') }}
+      </p>
       <div class="grid grid-cols-2 gap-4">
-        <UFormField :label="t('jobs.form.retention_days')" name="retentionDays">
-          <UInputNumber v-model="form.retentionDays" :min="0" :max="3650" class="w-full" />
+        <UFormField
+          :label="t('jobs.form.retention_days')"
+          name="retentionDays"
+        >
+          <UInputNumber
+            v-model="form.retentionDays"
+            :min="0"
+            :max="3650"
+            class="w-full"
+          />
         </UFormField>
-        <UFormField :label="t('jobs.form.retention_count')" name="retentionCount">
-          <UInputNumber v-model="form.retentionCount" :min="0" :max="9999" class="w-full" />
+        <UFormField
+          :label="t('jobs.form.retention_count')"
+          name="retentionCount"
+        >
+          <UInputNumber
+            v-model="form.retentionCount"
+            :min="0"
+            :max="9999"
+            class="w-full"
+          />
         </UFormField>
       </div>
     </fieldset>
 
-    <UFormField :label="t('common.status')" name="enabled">
+    <UFormField
+      :label="t('common.status')"
+      name="enabled"
+    >
       <USwitch
         v-model="form.enabled"
         :label="form.enabled ? t('jobs.form.status_enabled') : t('jobs.form.status_disabled')"
@@ -187,8 +253,18 @@ function handleSubmit(_e?: FormSubmitEvent<JobFormData>) {
     </UFormField>
 
     <div class="flex justify-end gap-2 pt-2">
-      <UButton to="/jobs" color="neutral" variant="ghost">{{ t('common.cancel') }}</UButton>
-      <UButton type="submit" :loading="loading" icon="i-lucide-save">
+      <UButton
+        to="/jobs"
+        color="neutral"
+        variant="ghost"
+      >
+        {{ t('common.cancel') }}
+      </UButton>
+      <UButton
+        type="submit"
+        :loading="loading"
+        icon="i-lucide-save"
+      >
         {{ t('common.save') }}
       </UButton>
     </div>

@@ -62,28 +62,56 @@ onMounted(() => {
   <div class="py-8 px-6 lg:px-8 space-y-6">
     <div class="anim-header flex items-center justify-between">
       <div>
-        <h1 class="text-xl font-semibold tracking-tight">{{ t('ssh.title') }}</h1>
-        <p class="text-sm text-muted mt-0.5">{{ t('ssh.subtitle') }}</p>
+        <h1 class="text-xl font-semibold tracking-tight">
+          {{ t('ssh.title') }}
+        </h1>
+        <p class="text-sm text-muted mt-0.5">
+          {{ t('ssh.subtitle') }}
+        </p>
       </div>
-      <UButton to="/ssh-connections/new" icon="i-lucide-plus" size="sm">
+      <UButton
+        to="/ssh-connections/new"
+        icon="i-lucide-plus"
+        size="sm"
+      >
         {{ t('ssh.add') }}
       </UButton>
     </div>
 
     <UCard class="anim-card">
-      <div v-if="!connections.length" class="py-16 text-center">
+      <div
+        v-if="!connections.length"
+        class="py-16 text-center"
+      >
         <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-elevated">
-          <UIcon name="i-lucide-server" class="h-7 w-7 text-muted" />
+          <UIcon
+            name="i-lucide-server"
+            class="h-7 w-7 text-muted"
+          />
         </div>
-        <p class="text-sm font-medium mb-1">{{ t('ssh.no_connections') }}</p>
-        <UButton to="/ssh-connections/new" size="sm" icon="i-lucide-plus" class="mt-3">
+        <p class="text-sm font-medium mb-1">
+          {{ t('ssh.no_connections') }}
+        </p>
+        <UButton
+          to="/ssh-connections/new"
+          size="sm"
+          icon="i-lucide-plus"
+          class="mt-3"
+        >
           {{ t('ssh.add') }}
         </UButton>
       </div>
 
-      <UTable v-else :data="connections" :columns="columns">
+      <UTable
+        v-else
+        :data="connections"
+        :columns="columns"
+      >
         <template #name-cell="{ row }">
-          <NuxtLink :to="`/ssh-connections/${row.original.id}`" class="font-medium text-sm hover:text-primary-500 transition-colors">
+          <NuxtLink
+            :to="`/ssh-connections/${row.original.id}`"
+            class="font-medium text-sm hover:text-primary-500 transition-colors"
+          >
             {{ row.original.name }}
           </NuxtLink>
         </template>
@@ -131,16 +159,30 @@ onMounted(() => {
       </UTable>
     </UCard>
 
-    <UModal v-model:open="showDelete" :title="t('ssh.delete_title')">
+    <UModal
+      v-model:open="showDelete"
+      :title="t('ssh.delete_title')"
+    >
       <template #body>
-        <p class="text-sm text-muted">{{ t('ssh.delete_msg') }}</p>
+        <p class="text-sm text-muted">
+          {{ t('ssh.delete_msg') }}
+        </p>
       </template>
       <template #footer>
         <div class="flex justify-end gap-2">
-          <UButton color="neutral" variant="ghost" size="sm" @click="showDelete = false">
+          <UButton
+            color="neutral"
+            variant="ghost"
+            size="sm"
+            @click="showDelete = false"
+          >
             {{ t('common.cancel') }}
           </UButton>
-          <UButton color="error" size="sm" @click="deleteConnection(deleteId!)">
+          <UButton
+            color="error"
+            size="sm"
+            @click="deleteConnection(deleteId!)"
+          >
             {{ t('common.delete') }}
           </UButton>
         </div>

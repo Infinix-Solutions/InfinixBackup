@@ -53,9 +53,9 @@ function write(level: LogLevel, category: string, message: string) {
 
 export const logger = {
   debug: (cat: string, msg: string) => write('debug', cat, msg),
-  info:  (cat: string, msg: string) => write('info',  cat, msg),
-  warn:  (cat: string, msg: string) => write('warn',  cat, msg),
-  error: (cat: string, msg: string) => write('error', cat, msg),
+  info: (cat: string, msg: string) => write('info', cat, msg),
+  warn: (cat: string, msg: string) => write('warn', cat, msg),
+  error: (cat: string, msg: string) => write('error', cat, msg)
 }
 
 export function getLogs(limit = 500, sinceId?: number): LogEntry[] {

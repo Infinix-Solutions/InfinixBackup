@@ -12,7 +12,7 @@ interface RuleMeta {
   tags: string[]
 }
 
-function parseFrontmatter(content: string): { meta: RuleMeta | null; body: string } {
+function parseFrontmatter(content: string): { meta: RuleMeta | null, body: string } {
   const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
   if (!match) return { meta: null, body: content }
 

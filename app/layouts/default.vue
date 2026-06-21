@@ -65,12 +65,21 @@ async function logout() {
       :ui="{ footer: 'lg:border-t lg:border-default' }"
     >
       <template #header="{ collapsed }">
-        <NuxtLink to="/" class="flex items-center gap-2.5 px-1 min-w-0">
+        <NuxtLink
+          to="/"
+          class="flex items-center gap-2.5 px-1 min-w-0"
+        >
           <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-500 shadow shadow-primary-500/40">
-            <UIcon name="i-lucide-archive" class="h-4 w-4 text-white" />
+            <UIcon
+              name="i-lucide-archive"
+              class="h-4 w-4 text-white"
+            />
           </div>
           <Transition name="fade">
-            <span v-if="!collapsed" class="font-semibold text-sm truncate">Infinix Backup</span>
+            <span
+              v-if="!collapsed"
+              class="font-semibold text-sm truncate"
+            >Infinix Backup</span>
           </Transition>
         </NuxtLink>
       </template>
@@ -94,7 +103,10 @@ async function logout() {
 
       <template #footer="{ collapsed }">
         <div class="px-1 py-1">
-          <UDropdownMenu v-if="currentUser" :items="userMenuItems">
+          <UDropdownMenu
+            v-if="currentUser"
+            :items="userMenuItems"
+          >
             <UButton
               color="neutral"
               variant="ghost"
@@ -103,11 +115,20 @@ async function logout() {
               :class="collapsed ? 'justify-center px-0' : 'justify-start'"
             >
               <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-500/15">
-                <UIcon name="i-lucide-user" class="h-3.5 w-3.5 text-primary-500" />
+                <UIcon
+                  name="i-lucide-user"
+                  class="h-3.5 w-3.5 text-primary-500"
+                />
               </div>
               <template v-if="!collapsed">
                 <span class="truncate text-sm font-medium">{{ currentUser.username }}</span>
-                <UBadge v-if="currentUser.role === 'admin'" size="xs" color="primary" variant="subtle" class="ml-auto shrink-0">
+                <UBadge
+                  v-if="currentUser.role === 'admin'"
+                  size="xs"
+                  color="primary"
+                  variant="subtle"
+                  class="ml-auto shrink-0"
+                >
                   admin
                 </UBadge>
               </template>
@@ -115,10 +136,25 @@ async function logout() {
           </UDropdownMenu>
         </div>
 
-        <div class="flex items-center gap-1 px-1 py-1" :class="collapsed ? 'justify-center' : ''">
-          <UColorModeButton size="sm" color="neutral" variant="ghost" />
-          <UDropdownMenu v-if="!collapsed" :items="langItems">
-            <UButton icon="i-lucide-globe" size="sm" color="neutral" variant="ghost" />
+        <div
+          class="flex items-center gap-1 px-1 py-1"
+          :class="collapsed ? 'justify-center' : ''"
+        >
+          <UColorModeButton
+            size="sm"
+            color="neutral"
+            variant="ghost"
+          />
+          <UDropdownMenu
+            v-if="!collapsed"
+            :items="langItems"
+          >
+            <UButton
+              icon="i-lucide-globe"
+              size="sm"
+              color="neutral"
+              variant="ghost"
+            />
           </UDropdownMenu>
         </div>
       </template>

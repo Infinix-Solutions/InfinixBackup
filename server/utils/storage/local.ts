@@ -1,7 +1,7 @@
 import { createReadStream, createWriteStream, existsSync, unlinkSync, statSync } from 'fs'
 import { mkdir } from 'fs/promises'
 import { join } from 'path'
-import { Readable } from 'stream'
+import type { Readable } from 'stream'
 import type { LocalConfig } from '../types'
 
 export async function uploadToLocal(

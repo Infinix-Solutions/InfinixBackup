@@ -1,7 +1,7 @@
-import * as Sentry from "@sentry/nuxt";
+import * as Sentry from '@sentry/nuxt'
 
 Sentry.init({
-  dsn: "https://942e66b9b264fb4f7df609352bb8c340@sentry.infinix-solutions.com/13",
+  dsn: 'https://942e66b9b264fb4f7df609352bb8c340@sentry.infinix-solutions.com/13',
 
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
@@ -15,5 +15,5 @@ Sentry.init({
   sendDefaultPii: true,
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
-  debug: false,
-});
+  debug: false
+})

@@ -179,18 +179,23 @@ onUnmounted(() => {
 <template>
   <div class="min-h-screen flex items-center justify-center p-6 bg-[#09080f]">
     <div class="w-full max-w-2xl">
-
       <!-- Logo -->
       <div class="flex items-center justify-center gap-3 mb-8">
         <div class="size-10 rounded-xl bg-violet-700 flex items-center justify-center">
-          <UIcon name="i-lucide-archive" class="size-5 text-white" />
+          <UIcon
+            name="i-lucide-archive"
+            class="size-5 text-white"
+          />
         </div>
         <span class="text-xl font-bold text-white tracking-tight">Infinix Backup</span>
       </div>
 
       <!-- Stepper -->
       <div class="flex items-center mb-8 px-2">
-        <template v-for="(s, i) in steps" :key="i">
+        <template
+          v-for="(s, i) in steps"
+          :key="i"
+        >
           <div class="flex items-center gap-2">
             <div
               class="size-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-all"
@@ -200,7 +205,11 @@ onUnmounted(() => {
                   ? 'bg-white text-[#09080f] ring-2 ring-offset-2 ring-offset-[#09080f] ring-violet-700'
                   : 'bg-white/5 text-white/30'"
             >
-              <UIcon v-if="i < step" name="i-lucide-check" class="size-4" />
+              <UIcon
+                v-if="i < step"
+                name="i-lucide-check"
+                class="size-4"
+              />
               <span v-else>{{ i + 1 }}</span>
             </div>
             <span
@@ -218,12 +227,18 @@ onUnmounted(() => {
 
       <!-- Card -->
       <div class="rounded-2xl border border-[#1e1a35] bg-[#100e1d] overflow-hidden">
-
         <!-- Step 0: Language -->
-        <div v-if="step === 0" class="p-8 space-y-6">
+        <div
+          v-if="step === 0"
+          class="p-8 space-y-6"
+        >
           <div>
-            <h1 class="text-xl font-bold text-white tracking-tight">{{ $t('setup.welcome.title') }}</h1>
-            <p class="text-sm text-white/50 mt-1 leading-relaxed">{{ $t('setup.welcome.subtitle') }}</p>
+            <h1 class="text-xl font-bold text-white tracking-tight">
+              {{ $t('setup.welcome.title') }}
+            </h1>
+            <p class="text-sm text-white/50 mt-1 leading-relaxed">
+              {{ $t('setup.welcome.subtitle') }}
+            </p>
           </div>
 
           <div class="space-y-2 max-w-xs">
@@ -238,12 +253,19 @@ onUnmounted(() => {
             >
               <span class="text-2xl leading-none">{{ lang.flag }}</span>
               <span class="font-medium text-sm">{{ lang.label }}</span>
-              <UIcon v-if="locale === lang.value" name="i-lucide-check" class="size-4 ml-auto text-violet-400" />
+              <UIcon
+                v-if="locale === lang.value"
+                name="i-lucide-check"
+                class="size-4 ml-auto text-violet-400"
+              />
             </button>
           </div>
 
           <div class="flex justify-end">
-            <UButton trailing-icon="i-lucide-arrow-right" @click="step = 1">
+            <UButton
+              trailing-icon="i-lucide-arrow-right"
+              @click="step = 1"
+            >
               {{ $t('setup.welcome.next') }}
             </UButton>
           </div>
@@ -251,22 +273,37 @@ onUnmounted(() => {
 
         <!-- Step 1: DB + sub-states -->
         <div v-else-if="step === 1">
-
           <!-- Restarting -->
-          <div v-if="restarting" class="p-8 space-y-5">
+          <div
+            v-if="restarting"
+            class="p-8 space-y-5"
+          >
             <div class="flex items-center gap-3">
-              <UIcon name="i-lucide-loader-2" class="size-5 text-violet-400 animate-spin shrink-0" />
-              <h2 class="text-xl font-bold text-white tracking-tight">{{ $t('setup.restart.title') }}</h2>
+              <UIcon
+                name="i-lucide-loader-2"
+                class="size-5 text-violet-400 animate-spin shrink-0"
+              />
+              <h2 class="text-xl font-bold text-white tracking-tight">
+                {{ $t('setup.restart.title') }}
+              </h2>
             </div>
-            <p class="text-sm text-white/50 leading-relaxed">{{ $t('setup.restart.subtitle') }}</p>
+            <p class="text-sm text-white/50 leading-relaxed">
+              {{ $t('setup.restart.subtitle') }}
+            </p>
 
             <div class="border border-white/8 rounded-xl px-4 py-3.5 space-y-2.5">
               <div class="flex items-center gap-2.5 text-sm text-white/50">
-                <UIcon name="i-lucide-check" class="size-3.5 text-green-400 shrink-0" />
+                <UIcon
+                  name="i-lucide-check"
+                  class="size-3.5 text-green-400 shrink-0"
+                />
                 Config written to <code class="font-mono text-xs text-violet-400">data/config.json</code>
               </div>
               <div class="flex items-center gap-2.5 text-sm text-white/50">
-                <UIcon name="i-lucide-loader-2" class="size-3.5 text-violet-400 shrink-0 animate-spin" />
+                <UIcon
+                  name="i-lucide-loader-2"
+                  class="size-3.5 text-violet-400 shrink-0 animate-spin"
+                />
                 Waiting for server to come back online...
               </div>
             </div>
@@ -278,34 +315,59 @@ onUnmounted(() => {
                   :style="{ width: `${Math.min(restartSeconds * 3, 88)}%` }"
                 />
               </div>
-              <p class="text-xs text-white/30">{{ $t('setup.restart.elapsed', { s: restartSeconds, n: restartAttempts }) }}</p>
+              <p class="text-xs text-white/30">
+                {{ $t('setup.restart.elapsed', { s: restartSeconds, n: restartAttempts }) }}
+              </p>
             </div>
 
             <div class="flex items-center gap-2 text-xs text-orange-400">
-              <UIcon name="i-lucide-alert-triangle" class="size-3.5 shrink-0" />
+              <UIcon
+                name="i-lucide-alert-triangle"
+                class="size-3.5 shrink-0"
+              />
               {{ $t('setup.restart.warning') }}
             </div>
           </div>
 
           <!-- Installing -->
-          <div v-else-if="installing || installError" class="p-8 space-y-4">
+          <div
+            v-else-if="installing || installError"
+            class="p-8 space-y-4"
+          >
             <div class="flex items-center gap-3">
               <UIcon
                 :name="installError ? 'i-lucide-alert-circle' : 'i-lucide-database'"
                 class="size-5 shrink-0"
                 :class="installError ? 'text-red-400' : 'text-violet-400 animate-pulse'"
               />
-              <h2 class="text-xl font-bold text-white tracking-tight">{{ installError ? 'Migration Failed' : $t('setup.install.title') }}</h2>
+              <h2 class="text-xl font-bold text-white tracking-tight">
+                {{ installError ? 'Migration Failed' : $t('setup.install.title') }}
+              </h2>
             </div>
-            <p class="text-sm text-white/50 leading-relaxed">{{ installError || $t('setup.install.subtitle') }}</p>
-            <UButton v-if="installError" leading-icon="i-lucide-rotate-ccw" @click="runInstall">Retry</UButton>
+            <p class="text-sm text-white/50 leading-relaxed">
+              {{ installError || $t('setup.install.subtitle') }}
+            </p>
+            <UButton
+              v-if="installError"
+              leading-icon="i-lucide-rotate-ccw"
+              @click="runInstall"
+            >
+              Retry
+            </UButton>
           </div>
 
           <!-- DB form -->
-          <div v-else class="p-8 space-y-6">
+          <div
+            v-else
+            class="p-8 space-y-6"
+          >
             <div>
-              <h2 class="text-xl font-bold text-white tracking-tight">{{ $t('setup.database.title') }}</h2>
-              <p class="text-sm text-white/50 mt-1 leading-relaxed">{{ $t('setup.database.subtitle') }}</p>
+              <h2 class="text-xl font-bold text-white tracking-tight">
+                {{ $t('setup.database.title') }}
+              </h2>
+              <p class="text-sm text-white/50 mt-1 leading-relaxed">
+                {{ $t('setup.database.subtitle') }}
+              </p>
             </div>
 
             <!-- Connection -->
@@ -313,27 +375,51 @@ onUnmounted(() => {
               <div class="grid grid-cols-[1fr_100px] gap-3">
                 <div class="space-y-1.5">
                   <label class="block text-xs font-medium text-white/50">{{ $t('common.host') }}</label>
-                  <input v-model="db.host" placeholder="localhost" :class="fieldCls" />
+                  <input
+                    v-model="db.host"
+                    placeholder="localhost"
+                    :class="fieldCls"
+                  >
                 </div>
                 <div class="space-y-1.5">
                   <label class="block text-xs font-medium text-white/50">{{ $t('common.port') }}</label>
-                  <input v-model.number="db.port" type="number" placeholder="5432" :class="fieldCls" />
+                  <input
+                    v-model.number="db.port"
+                    type="number"
+                    placeholder="5432"
+                    :class="fieldCls"
+                  >
                 </div>
               </div>
 
               <div class="space-y-1.5">
                 <label class="block text-xs font-medium text-white/50">{{ $t('common.database') }}</label>
-                <input v-model="db.database" placeholder="infinix_backup" :class="fieldCls" />
+                <input
+                  v-model="db.database"
+                  placeholder="infinix_backup"
+                  :class="fieldCls"
+                >
               </div>
 
               <div class="grid grid-cols-2 gap-3">
                 <div class="space-y-1.5">
                   <label class="block text-xs font-medium text-white/50">{{ $t('common.username') }}</label>
-                  <input v-model="db.username" autocomplete="off" placeholder="postgres" :class="fieldCls" />
+                  <input
+                    v-model="db.username"
+                    autocomplete="off"
+                    placeholder="postgres"
+                    :class="fieldCls"
+                  >
                 </div>
                 <div class="space-y-1.5">
                   <label class="block text-xs font-medium text-white/50">{{ $t('common.password') }}</label>
-                  <input v-model="db.password" type="password" autocomplete="new-password" placeholder="••••••••" :class="fieldCls" />
+                  <input
+                    v-model="db.password"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="••••••••"
+                    :class="fieldCls"
+                  >
                 </div>
               </div>
 
@@ -355,47 +441,122 @@ onUnmounted(() => {
             <!-- Security keys -->
             <div class="border-t border-white/8 pt-5 space-y-4">
               <div>
-                <p class="text-xs font-semibold uppercase tracking-widest text-white/30 mb-1">{{ $t('setup.security.title') }}</p>
-                <p class="text-xs text-white/30 leading-relaxed">{{ $t('setup.security.hint') }}</p>
+                <p class="text-xs font-semibold uppercase tracking-widest text-white/30 mb-1">
+                  {{ $t('setup.security.title') }}
+                </p>
+                <p class="text-xs text-white/30 leading-relaxed">
+                  {{ $t('setup.security.hint') }}
+                </p>
               </div>
 
               <div class="space-y-3">
                 <div class="space-y-1.5">
                   <label class="block text-xs font-medium text-white/50">{{ $t('setup.security.enc_key') }}</label>
                   <div class="flex gap-1.5">
-                    <input :value="encKey" :type="encKeyVisible ? 'text' : 'password'" readonly :class="[fieldCls, 'flex-1 font-mono text-[11px] focus:border-white/10 focus:ring-0 cursor-default']" />
-                    <UButton :icon="encKeyVisible ? 'i-lucide-eye-off' : 'i-lucide-eye'" color="neutral" variant="outline" size="sm" @click="encKeyVisible = !encKeyVisible" />
-                    <UButton :icon="encKeyCopied ? 'i-lucide-check' : 'i-lucide-copy'" color="neutral" variant="outline" size="sm" :class="encKeyCopied ? 'text-green-400' : ''" @click="copyKey(encKey, 'enc')" />
-                    <UButton icon="i-lucide-refresh-cw" color="neutral" variant="outline" size="sm" @click="encKey = generateHex()" />
+                    <input
+                      :value="encKey"
+                      :type="encKeyVisible ? 'text' : 'password'"
+                      readonly
+                      :class="[fieldCls, 'flex-1 font-mono text-[11px] focus:border-white/10 focus:ring-0 cursor-default']"
+                    >
+                    <UButton
+                      :icon="encKeyVisible ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                      color="neutral"
+                      variant="outline"
+                      size="sm"
+                      @click="encKeyVisible = !encKeyVisible"
+                    />
+                    <UButton
+                      :icon="encKeyCopied ? 'i-lucide-check' : 'i-lucide-copy'"
+                      color="neutral"
+                      variant="outline"
+                      size="sm"
+                      :class="encKeyCopied ? 'text-green-400' : ''"
+                      @click="copyKey(encKey, 'enc')"
+                    />
+                    <UButton
+                      icon="i-lucide-refresh-cw"
+                      color="neutral"
+                      variant="outline"
+                      size="sm"
+                      @click="encKey = generateHex()"
+                    />
                   </div>
                 </div>
 
                 <div class="space-y-1.5">
                   <label class="block text-xs font-medium text-white/50">{{ $t('setup.security.sess_key') }}</label>
                   <div class="flex gap-1.5">
-                    <input :value="sessKey" :type="sessKeyVisible ? 'text' : 'password'" readonly :class="[fieldCls, 'flex-1 font-mono text-[11px] focus:border-white/10 focus:ring-0 cursor-default']" />
-                    <UButton :icon="sessKeyVisible ? 'i-lucide-eye-off' : 'i-lucide-eye'" color="neutral" variant="outline" size="sm" @click="sessKeyVisible = !sessKeyVisible" />
-                    <UButton :icon="sessKeyCopied ? 'i-lucide-check' : 'i-lucide-copy'" color="neutral" variant="outline" size="sm" :class="sessKeyCopied ? 'text-green-400' : ''" @click="copyKey(sessKey, 'sess')" />
-                    <UButton icon="i-lucide-refresh-cw" color="neutral" variant="outline" size="sm" @click="sessKey = generateHex()" />
+                    <input
+                      :value="sessKey"
+                      :type="sessKeyVisible ? 'text' : 'password'"
+                      readonly
+                      :class="[fieldCls, 'flex-1 font-mono text-[11px] focus:border-white/10 focus:ring-0 cursor-default']"
+                    >
+                    <UButton
+                      :icon="sessKeyVisible ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                      color="neutral"
+                      variant="outline"
+                      size="sm"
+                      @click="sessKeyVisible = !sessKeyVisible"
+                    />
+                    <UButton
+                      :icon="sessKeyCopied ? 'i-lucide-check' : 'i-lucide-copy'"
+                      color="neutral"
+                      variant="outline"
+                      size="sm"
+                      :class="sessKeyCopied ? 'text-green-400' : ''"
+                      @click="copyKey(sessKey, 'sess')"
+                    />
+                    <UButton
+                      icon="i-lucide-refresh-cw"
+                      color="neutral"
+                      variant="outline"
+                      size="sm"
+                      @click="sessKey = generateHex()"
+                    />
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Status -->
-            <div v-if="testStatus === 'ok'" class="flex items-center gap-2 text-sm text-green-400 bg-green-950/40 border border-green-900/50 rounded-lg px-3 py-2.5">
-              <UIcon name="i-lucide-check-circle" class="size-4 shrink-0" /> {{ testMsg }}
+            <div
+              v-if="testStatus === 'ok'"
+              class="flex items-center gap-2 text-sm text-green-400 bg-green-950/40 border border-green-900/50 rounded-lg px-3 py-2.5"
+            >
+              <UIcon
+                name="i-lucide-check-circle"
+                class="size-4 shrink-0"
+              /> {{ testMsg }}
             </div>
-            <div v-if="testStatus === 'error'" class="flex items-start gap-2 text-sm text-red-300 bg-red-950/40 border border-red-900/50 rounded-lg px-3 py-2.5">
-              <UIcon name="i-lucide-alert-circle" class="size-4 shrink-0 mt-0.5" /> {{ testMsg }}
+            <div
+              v-if="testStatus === 'error'"
+              class="flex items-start gap-2 text-sm text-red-300 bg-red-950/40 border border-red-900/50 rounded-lg px-3 py-2.5"
+            >
+              <UIcon
+                name="i-lucide-alert-circle"
+                class="size-4 shrink-0 mt-0.5"
+              /> {{ testMsg }}
             </div>
-            <div v-if="saveError" class="flex items-start gap-2 text-sm text-red-300 bg-red-950/40 border border-red-900/50 rounded-lg px-3 py-2.5">
-              <UIcon name="i-lucide-alert-circle" class="size-4 shrink-0 mt-0.5" /> {{ saveError }}
+            <div
+              v-if="saveError"
+              class="flex items-start gap-2 text-sm text-red-300 bg-red-950/40 border border-red-900/50 rounded-lg px-3 py-2.5"
+            >
+              <UIcon
+                name="i-lucide-alert-circle"
+                class="size-4 shrink-0 mt-0.5"
+              /> {{ saveError }}
             </div>
 
             <!-- Actions -->
             <div class="flex items-center justify-between pt-2">
-              <UButton variant="ghost" color="neutral" leading-icon="i-lucide-arrow-left" @click="step = 0">
+              <UButton
+                variant="ghost"
+                color="neutral"
+                leading-icon="i-lucide-arrow-left"
+                @click="step = 0"
+              >
                 {{ $t('setup.database.back') }}
               </UButton>
               <div class="flex gap-2">
@@ -413,7 +574,11 @@ onUnmounted(() => {
                   :disabled="saving || !db.host || !db.database || !db.username"
                   @click="saveAndRestart"
                 >
-                  <UIcon :name="saving ? 'i-lucide-loader-2' : 'i-lucide-save'" class="size-3.5" :class="saving ? 'animate-spin' : ''" />
+                  <UIcon
+                    :name="saving ? 'i-lucide-loader-2' : 'i-lucide-save'"
+                    class="size-3.5"
+                    :class="saving ? 'animate-spin' : ''"
+                  />
                   {{ saving ? $t('setup.database.saving') : $t('setup.database.save_btn') }}
                 </button>
               </div>
@@ -422,31 +587,61 @@ onUnmounted(() => {
         </div>
 
         <!-- Step 2: Admin -->
-        <div v-else-if="step === 2" class="p-8 space-y-6">
+        <div
+          v-else-if="step === 2"
+          class="p-8 space-y-6"
+        >
           <div>
-            <h2 class="text-xl font-bold text-white tracking-tight">{{ $t('setup.admin.title') }}</h2>
-            <p class="text-sm text-white/50 mt-1 leading-relaxed">{{ $t('setup.admin.subtitle') }}</p>
+            <h2 class="text-xl font-bold text-white tracking-tight">
+              {{ $t('setup.admin.title') }}
+            </h2>
+            <p class="text-sm text-white/50 mt-1 leading-relaxed">
+              {{ $t('setup.admin.subtitle') }}
+            </p>
           </div>
 
-          <div v-if="adminError" class="flex items-start gap-2 text-sm text-red-300 bg-red-950/40 border border-red-900/50 rounded-lg px-3 py-2.5">
-            <UIcon name="i-lucide-alert-circle" class="size-4 shrink-0 mt-0.5" /> {{ adminError }}
+          <div
+            v-if="adminError"
+            class="flex items-start gap-2 text-sm text-red-300 bg-red-950/40 border border-red-900/50 rounded-lg px-3 py-2.5"
+          >
+            <UIcon
+              name="i-lucide-alert-circle"
+              class="size-4 shrink-0 mt-0.5"
+            /> {{ adminError }}
           </div>
 
           <div class="space-y-4">
             <div class="space-y-1.5">
               <label class="block text-xs font-medium text-white/50">{{ $t('common.username') }}</label>
-              <input v-model="adminForm.username" autocomplete="username" placeholder="admin" :class="fieldCls" />
+              <input
+                v-model="adminForm.username"
+                autocomplete="username"
+                placeholder="admin"
+                :class="fieldCls"
+              >
             </div>
             <div class="space-y-1.5">
               <label class="block text-xs font-medium text-white/50">
                 {{ $t('common.password') }}
                 <span class="text-white/25 font-normal ml-1">{{ $t('setup.admin.password_hint') }}</span>
               </label>
-              <input v-model="adminForm.password" type="password" autocomplete="new-password" placeholder="••••••••" :class="fieldCls" />
+              <input
+                v-model="adminForm.password"
+                type="password"
+                autocomplete="new-password"
+                placeholder="••••••••"
+                :class="fieldCls"
+              >
             </div>
             <div class="space-y-1.5">
               <label class="block text-xs font-medium text-white/50">{{ $t('setup.admin.confirm_password') }}</label>
-              <input v-model="adminForm.confirm" type="password" autocomplete="new-password" placeholder="••••••••" :class="fieldCls" />
+              <input
+                v-model="adminForm.confirm"
+                type="password"
+                autocomplete="new-password"
+                placeholder="••••••••"
+                :class="fieldCls"
+              >
             </div>
           </div>
 
@@ -463,43 +658,68 @@ onUnmounted(() => {
         </div>
 
         <!-- Step 3: Complete -->
-        <div v-else class="p-8 space-y-6">
+        <div
+          v-else
+          class="p-8 space-y-6"
+        >
           <div class="flex items-center gap-3">
             <div class="size-10 rounded-xl bg-violet-700/20 flex items-center justify-center shrink-0">
-              <UIcon name="i-lucide-check" class="size-5 text-violet-400" />
+              <UIcon
+                name="i-lucide-check"
+                class="size-5 text-violet-400"
+              />
             </div>
             <div>
-              <h2 class="text-xl font-bold text-white tracking-tight">{{ $t('setup.complete.title') }}</h2>
-              <p class="text-sm text-white/50 mt-0.5">{{ $t('setup.complete.subtitle') }}</p>
+              <h2 class="text-xl font-bold text-white tracking-tight">
+                {{ $t('setup.complete.title') }}
+              </h2>
+              <p class="text-sm text-white/50 mt-0.5">
+                {{ $t('setup.complete.subtitle') }}
+              </p>
             </div>
           </div>
 
           <div class="border border-white/8 rounded-xl p-4 space-y-3">
-            <p class="text-xs font-semibold uppercase tracking-widest text-white/30">{{ $t('setup.complete.tip_title') }}</p>
+            <p class="text-xs font-semibold uppercase tracking-widest text-white/30">
+              {{ $t('setup.complete.tip_title') }}
+            </p>
             <div class="space-y-2.5">
               <div class="flex items-start gap-2.5 text-sm text-white/50">
-                <UIcon name="i-lucide-database" class="size-4 shrink-0 mt-0.5 text-violet-500" />
+                <UIcon
+                  name="i-lucide-database"
+                  class="size-4 shrink-0 mt-0.5 text-violet-500"
+                />
                 {{ $t('setup.complete.tip_1') }}
               </div>
               <div class="flex items-start gap-2.5 text-sm text-white/50">
-                <UIcon name="i-lucide-hard-drive" class="size-4 shrink-0 mt-0.5 text-orange-500" />
+                <UIcon
+                  name="i-lucide-hard-drive"
+                  class="size-4 shrink-0 mt-0.5 text-orange-500"
+                />
                 {{ $t('setup.complete.tip_2') }}
               </div>
               <div class="flex items-start gap-2.5 text-sm text-white/50">
-                <UIcon name="i-lucide-calendar-clock" class="size-4 shrink-0 mt-0.5 text-violet-500" />
+                <UIcon
+                  name="i-lucide-calendar-clock"
+                  class="size-4 shrink-0 mt-0.5 text-violet-500"
+                />
                 {{ $t('setup.complete.tip_3') }}
               </div>
             </div>
           </div>
 
-          <UButton trailing-icon="i-lucide-arrow-right" @click="goToDashboard">
+          <UButton
+            trailing-icon="i-lucide-arrow-right"
+            @click="goToDashboard"
+          >
             {{ $t('setup.complete.btn') }}
           </UButton>
         </div>
-
       </div>
 
-      <p class="text-center text-white/20 text-xs mt-6">Infinix Backup · Automated Backup System</p>
+      <p class="text-center text-white/20 text-xs mt-6">
+        Infinix Backup · Automated Backup System
+      </p>
     </div>
   </div>
 </template>

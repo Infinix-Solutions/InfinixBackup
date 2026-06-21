@@ -31,9 +31,14 @@ onMounted(() => {
 <template>
   <div class="py-8 px-6 lg:px-8 max-w-4xl space-y-6">
     <div>
-      <UBreadcrumb :items="[{ label: t('runs.title'), to: '/runs' }, { label: t('runs.details_title') }]" class="mb-3" />
+      <UBreadcrumb
+        :items="[{ label: t('runs.title'), to: '/runs' }, { label: t('runs.details_title') }]"
+        class="mb-3"
+      />
       <div class="flex items-center gap-3">
-        <h1 class="text-2xl font-bold">{{ t('runs.details_title') }}</h1>
+        <h1 class="text-2xl font-bold">
+          {{ t('runs.details_title') }}
+        </h1>
         <UBadge
           v-if="run"
           :color="statusColors[run.status as keyof typeof statusColors]"
@@ -43,26 +48,40 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="run" class="grid grid-cols-2 gap-4">
+    <div
+      v-if="run"
+      class="grid grid-cols-2 gap-4"
+    >
       <UCard>
         <template #header>
-          <h3 class="text-sm font-semibold text-muted uppercase tracking-wide">{{ t('runs.job_info') }}</h3>
+          <h3 class="text-sm font-semibold text-muted uppercase tracking-wide">
+            {{ t('runs.job_info') }}
+          </h3>
         </template>
         <dl class="space-y-3 text-sm">
           <div class="flex justify-between">
-            <dt class="text-muted">{{ t('runs.job') }}</dt>
+            <dt class="text-muted">
+              {{ t('runs.job') }}
+            </dt>
             <dd class="font-medium">
-              <NuxtLink :to="`/jobs/${run.job?.id}`" class="hover:text-primary-500">
+              <NuxtLink
+                :to="`/jobs/${run.job?.id}`"
+                class="hover:text-primary-500"
+              >
                 {{ run.job?.name }}
               </NuxtLink>
             </dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-muted">{{ t('common.source') }}</dt>
+            <dt class="text-muted">
+              {{ t('common.source') }}
+            </dt>
             <dd>{{ run.job?.source?.name }}</dd>
           </div>
           <div class="flex flex-col gap-2 pt-1">
-            <dt class="text-muted">{{ t('common.destinations') }}</dt>
+            <dt class="text-muted">
+              {{ t('common.destinations') }}
+            </dt>
             <dd class="space-y-1.5">
               <template v-if="run.destinationResults?.length">
                 <div
@@ -77,9 +96,17 @@ onMounted(() => {
                       class="h-3.5 w-3.5 shrink-0"
                     />
                     <span class="text-xs font-medium truncate">{{ dest.name }}</span>
-                    <UBadge :label="dest.type" size="xs" color="neutral" variant="subtle" />
+                    <UBadge
+                      :label="dest.type"
+                      size="xs"
+                      color="neutral"
+                      variant="subtle"
+                    />
                   </div>
-                  <UTooltip v-if="dest.status === 'success' && run.fileName" :text="t('runs.download')">
+                  <UTooltip
+                    v-if="dest.status === 'success' && run.fileName"
+                    :text="t('runs.download')"
+                  >
                     <UButton
                       :href="`/api/runs/${runId}/download?destinationId=${dest.id}`"
                       external
@@ -89,8 +116,14 @@ onMounted(() => {
                       variant="ghost"
                     />
                   </UTooltip>
-                  <UTooltip v-else-if="dest.error" :text="dest.error">
-                    <UIcon name="i-lucide-info" class="h-3.5 w-3.5 text-error-400 shrink-0" />
+                  <UTooltip
+                    v-else-if="dest.error"
+                    :text="dest.error"
+                  >
+                    <UIcon
+                      name="i-lucide-info"
+                      class="h-3.5 w-3.5 text-error-400 shrink-0"
+                    />
                   </UTooltip>
                 </div>
               </template>
@@ -102,9 +135,17 @@ onMounted(() => {
                 >
                   <div class="flex items-center gap-2">
                     <span class="text-xs font-medium">{{ dest.name }}</span>
-                    <UBadge :label="dest.type" size="xs" color="neutral" variant="subtle" />
+                    <UBadge
+                      :label="dest.type"
+                      size="xs"
+                      color="neutral"
+                      variant="subtle"
+                    />
                   </div>
-                  <UTooltip v-if="run.status === 'success' && run.fileName" :text="t('runs.download')">
+                  <UTooltip
+                    v-if="run.status === 'success' && run.fileName"
+                    :text="t('runs.download')"
+                  >
                     <UButton
                       :href="`/api/runs/${runId}/download?destinationId=${dest.id}`"
                       external
@@ -116,7 +157,10 @@ onMounted(() => {
                   </UTooltip>
                 </div>
               </template>
-              <span v-else class="text-xs text-muted">—</span>
+              <span
+                v-else
+                class="text-xs text-muted"
+              >—</span>
             </dd>
           </div>
         </dl>
@@ -124,28 +168,45 @@ onMounted(() => {
 
       <UCard>
         <template #header>
-          <h3 class="text-sm font-semibold text-muted uppercase tracking-wide">{{ t('runs.execution') }}</h3>
+          <h3 class="text-sm font-semibold text-muted uppercase tracking-wide">
+            {{ t('runs.execution') }}
+          </h3>
         </template>
         <dl class="space-y-3 text-sm">
           <div class="flex justify-between">
-            <dt class="text-muted">{{ t('common.started') }}</dt>
+            <dt class="text-muted">
+              {{ t('common.started') }}
+            </dt>
             <dd>{{ formatDateTime(run.startedAt) }}</dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-muted">{{ t('runs.completed') }}</dt>
+            <dt class="text-muted">
+              {{ t('runs.completed') }}
+            </dt>
             <dd>{{ formatDateTime(run.completedAt) }}</dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-muted">{{ t('common.duration') }}</dt>
+            <dt class="text-muted">
+              {{ t('common.duration') }}
+            </dt>
             <dd>{{ formatDuration(run.startedAt, run.completedAt) }}</dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-muted">{{ t('common.size') }}</dt>
+            <dt class="text-muted">
+              {{ t('common.size') }}
+            </dt>
             <dd>{{ formatBytes(run.fileSizeBytes) }}</dd>
           </div>
-          <div v-if="run.fileName" class="flex justify-between">
-            <dt class="text-muted">{{ t('runs.file_name') }}</dt>
-            <dd class="font-mono text-xs">{{ run.fileName }}</dd>
+          <div
+            v-if="run.fileName"
+            class="flex justify-between"
+          >
+            <dt class="text-muted">
+              {{ t('runs.file_name') }}
+            </dt>
+            <dd class="font-mono text-xs">
+              {{ run.fileName }}
+            </dd>
           </div>
         </dl>
       </UCard>
@@ -164,7 +225,9 @@ onMounted(() => {
     <UCard v-if="run">
       <template #header>
         <div class="flex items-center justify-between">
-          <h3 class="text-sm font-semibold text-muted uppercase tracking-wide">{{ t('runs.logs') }}</h3>
+          <h3 class="text-sm font-semibold text-muted uppercase tracking-wide">
+            {{ t('runs.logs') }}
+          </h3>
           <UButton
             v-if="isRunning"
             icon="i-lucide-refresh-cw"
@@ -182,7 +245,10 @@ onMounted(() => {
           v-if="run.logs"
           class="text-xs font-mono whitespace-pre-wrap break-words text-muted p-2 leading-relaxed"
         >{{ run.logs }}</pre>
-        <div v-else class="py-8 text-center text-muted text-sm">
+        <div
+          v-else
+          class="py-8 text-center text-muted text-sm"
+        >
           {{ t('runs.no_logs') }}
         </div>
       </UScrollArea>

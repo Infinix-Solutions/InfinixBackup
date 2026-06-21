@@ -30,18 +30,30 @@ async function login() {
       <div class="text-center mb-8">
         <div class="inline-flex items-center gap-3 mb-2">
           <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-500 shadow-lg shadow-primary-500/30">
-            <UIcon name="i-lucide-archive" class="h-7 w-7 text-white" />
+            <UIcon
+              name="i-lucide-archive"
+              class="h-7 w-7 text-white"
+            />
           </div>
           <span class="text-2xl font-bold text-white">Infinix Backup</span>
         </div>
-        <p class="text-neutral-400 text-sm">{{ t('login.subtitle') }}</p>
+        <p class="text-neutral-400 text-sm">
+          {{ t('login.subtitle') }}
+        </p>
       </div>
 
       <UCard class="shadow-2xl">
-        <form class="space-y-5" @submit.prevent="login">
+        <form
+          class="space-y-5"
+          @submit.prevent="login"
+        >
           <div>
-            <h1 class="text-xl font-bold">{{ t('login.title') }}</h1>
-            <p class="text-muted text-sm mt-0.5">{{ t('login.description') }}</p>
+            <h1 class="text-xl font-bold">
+              {{ t('login.title') }}
+            </h1>
+            <p class="text-muted text-sm mt-0.5">
+              {{ t('login.description') }}
+            </p>
           </div>
 
           <UAlert
@@ -52,7 +64,11 @@ async function login() {
             :title="error"
           />
 
-          <UFormField :label="t('common.username')" name="username" required>
+          <UFormField
+            :label="t('common.username')"
+            name="username"
+            required
+          >
             <UInput
               v-model="form.username"
               autocomplete="username"
@@ -63,7 +79,11 @@ async function login() {
             />
           </UFormField>
 
-          <UFormField :label="t('common.password')" name="password" required>
+          <UFormField
+            :label="t('common.password')"
+            name="password"
+            required
+          >
             <UInput
               v-model="form.password"
               type="password"
@@ -75,7 +95,13 @@ async function login() {
             />
           </UFormField>
 
-          <UButton type="submit" size="lg" class="w-full" :loading="loading" justify="center">
+          <UButton
+            type="submit"
+            size="lg"
+            class="w-full"
+            :loading="loading"
+            justify="center"
+          >
             {{ t('login.btn') }}
           </UButton>
         </form>

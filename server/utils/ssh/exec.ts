@@ -102,5 +102,5 @@ export function sshExecString(command: string, config: SshConfig): Promise<strin
 }
 
 export function shEscape(s: string): string {
-  return `'${s.replace(/'/g, "'\\''")}'`
+  return `'${s.replace(/'/g, '\'\\\'\'')}'`
 }

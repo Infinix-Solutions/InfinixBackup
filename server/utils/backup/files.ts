@@ -1,5 +1,5 @@
 import { spawn } from 'child_process'
-import { Readable } from 'stream'
+import type { Readable } from 'stream'
 import { existsSync } from 'fs'
 import { sshExec, sshExecString, shEscape } from '../ssh/exec'
 import type { FilesConfig, CompressionType, SshConnectionConfig } from '../types'
@@ -26,7 +26,7 @@ export function createFilesBackup(config: FilesConfig, compression: CompressionT
 
   const proc = spawn('tar', tarArgs)
   proc.stderr.on('data', (data: Buffer) => console.error('[tar stderr]', data.toString()))
-  proc.on('error', (err) => console.error('[tar error]', err))
+  proc.on('error', err => console.error('[tar error]', err))
   proc.on('close', (code) => { if (code !== 0) console.error(`[tar] exited with code ${code}`) })
 
   return proc.stdout

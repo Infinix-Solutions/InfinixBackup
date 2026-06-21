@@ -27,10 +27,15 @@ async function handleSubmit(data: SourceFormData) {
         :items="[{ label: t('sources.title'), to: '/sources' }, { label: t('sources.new_title') }]"
         class="mb-3"
       />
-      <h1 class="text-xl font-semibold tracking-tight">{{ t('sources.new_title') }}</h1>
+      <h1 class="text-xl font-semibold tracking-tight">
+        {{ t('sources.new_title') }}
+      </h1>
     </div>
     <UCard>
-      <SourceForm :loading="loading" @submit="handleSubmit" />
+      <SourceForm
+        :loading="loading"
+        @submit="handleSubmit"
+      />
     </UCard>
   </div>
 </template>

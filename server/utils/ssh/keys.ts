@@ -7,10 +7,10 @@ function sshBuf(s: string | Buffer): Buffer {
   return Buffer.concat([len, b])
 }
 
-export function generateSshKeyPair(comment = 'infinix-backup'): { privateKey: string; publicKey: string } {
+export function generateSshKeyPair(comment = 'infinix-backup'): { privateKey: string, publicKey: string } {
   const { privateKey: privObj } = generateKeyPairSync('ed25519')
 
-  const jwkPriv = privObj.export({ format: 'jwk' }) as { d: string; x: string }
+  const jwkPriv = privObj.export({ format: 'jwk' }) as { d: string, x: string }
   const seed = Buffer.from(jwkPriv.d, 'base64url')
   const pubBytes = Buffer.from(jwkPriv.x, 'base64url')
 

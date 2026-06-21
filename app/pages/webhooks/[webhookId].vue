@@ -30,15 +30,23 @@ async function handleSubmit(data: WebhookFormData) {
 <template>
   <div class="py-8 px-6 lg:px-8 max-w-3xl mx-auto">
     <div class="mb-6">
-      <UBreadcrumb :items="[
-        { label: t('webhooks.title'), to: '/webhooks' },
-        { label: webhook!.name }
-      ]" />
-      <h1 class="text-xl font-semibold tracking-tight mt-3">{{ t('webhooks.edit_title') }}</h1>
+      <UBreadcrumb
+        :items="[
+          { label: t('webhooks.title'), to: '/webhooks' },
+          { label: webhook!.name }
+        ]"
+      />
+      <h1 class="text-xl font-semibold tracking-tight mt-3">
+        {{ t('webhooks.edit_title') }}
+      </h1>
     </div>
 
     <UCard>
-      <WebhookForm :initial="webhook!" :loading="loading" @submit="handleSubmit" />
+      <WebhookForm
+        :initial="webhook!"
+        :loading="loading"
+        @submit="handleSubmit"
+      />
     </UCard>
   </div>
 </template>

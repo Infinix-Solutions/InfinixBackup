@@ -42,7 +42,9 @@ async function testConnection() {
         class="mb-3"
       />
       <div class="flex items-center justify-between">
-        <h1 class="text-xl font-semibold tracking-tight">{{ t('sources.edit_title') }}</h1>
+        <h1 class="text-xl font-semibold tracking-tight">
+          {{ t('sources.edit_title') }}
+        </h1>
         <UButton
           icon="i-lucide-plug-zap"
           color="neutral"
@@ -55,7 +57,11 @@ async function testConnection() {
       </div>
     </div>
     <UCard v-if="source">
-      <SourceForm :initial="source" :loading="loading" @submit="handleSubmit" />
+      <SourceForm
+        :initial="source"
+        :loading="loading"
+        @submit="handleSubmit"
+      />
     </UCard>
   </div>
 </template>

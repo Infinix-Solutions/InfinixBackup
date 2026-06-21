@@ -27,10 +27,15 @@ async function handleSubmit(data: DestinationFormData) {
         :items="[{ label: t('destinations.title'), to: '/destinations' }, { label: t('destinations.new_title') }]"
         class="mb-3"
       />
-      <h1 class="text-xl font-semibold tracking-tight">{{ t('destinations.new_title') }}</h1>
+      <h1 class="text-xl font-semibold tracking-tight">
+        {{ t('destinations.new_title') }}
+      </h1>
     </div>
     <UCard>
-      <DestinationForm :loading="loading" @submit="handleSubmit" />
+      <DestinationForm
+        :loading="loading"
+        @submit="handleSubmit"
+      />
     </UCard>
   </div>
 </template>

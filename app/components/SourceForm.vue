@@ -45,7 +45,7 @@ watch(selectedSshId, (id) => {
   if (mounted) form.config = {}
 })
 
-const { data: dockerContainerList } = useFetch<Array<{ name: string; image: string }>>('/api/docker/containers', {
+const { data: dockerContainerList } = useFetch<Array<{ name: string, image: string }>>('/api/docker/containers', {
   default: () => []
 })
 
@@ -53,7 +53,7 @@ const containerOptions = computed(() => {
   if (selectedSshId.value && probe.value) {
     return probe.value.containers.map(name => ({ value: name, label: name }))
   }
-  return (dockerContainerList.value || []).map((c) => ({
+  return (dockerContainerList.value || []).map(c => ({
     value: c.name,
     label: `${c.name} (${c.image})`
   }))
@@ -80,10 +80,10 @@ const sourceTypes = computed(() => {
   if (!selectedSshId.value || !probe.value) return allTypes
   const p = probe.value
   return allTypes.filter(st =>
-    (!st.needsDocker || p.docker) &&
-    (!st.needsPostgres || p.postgres) &&
-    (!st.needsMysql || p.mysql) &&
-    (!st.needsMongo || p.mongo)
+    (!st.needsDocker || p.docker)
+    && (!st.needsPostgres || p.postgres)
+    && (!st.needsMysql || p.mysql)
+    && (!st.needsMongo || p.mongo)
   )
 }) as ComputedRef<{ label: string, value: string, icon: string }[]>
 
@@ -109,13 +109,28 @@ function handleSubmit() {
 </script>
 
 <template>
-  <UForm :state="form" class="space-y-5" @submit="handleSubmit">
-    <UFormField :label="t('sources.form.name')" name="name" required>
-      <UInput v-model="form.name" :placeholder="t('sources.form.name_ph')" class="w-full" />
+  <UForm
+    :state="form"
+    class="space-y-5"
+    @submit="handleSubmit"
+  >
+    <UFormField
+      :label="t('sources.form.name')"
+      name="name"
+      required
+    >
+      <UInput
+        v-model="form.name"
+        :placeholder="t('sources.form.name_ph')"
+        class="w-full"
+      />
     </UFormField>
 
     <!-- Server selector -->
-    <UFormField :label="t('ssh.form.server')" name="sshConnectionId">
+    <UFormField
+      :label="t('ssh.form.server')"
+      name="sshConnectionId"
+    >
       <div class="flex items-center gap-2">
         <USelect
           v-model="selectedSshId"
@@ -124,12 +139,24 @@ function handleSubmit() {
           label-key="label"
           class="w-full"
         />
-        <UIcon v-if="probing" name="i-lucide-loader-circle" class="h-4 w-4 animate-spin text-muted shrink-0" />
-        <UIcon v-else-if="probe && selectedSshId" name="i-lucide-check-circle" class="h-4 w-4 text-success-500 shrink-0" />
+        <UIcon
+          v-if="probing"
+          name="i-lucide-loader-circle"
+          class="h-4 w-4 animate-spin text-muted shrink-0"
+        />
+        <UIcon
+          v-else-if="probe && selectedSshId"
+          name="i-lucide-check-circle"
+          class="h-4 w-4 text-success-500 shrink-0"
+        />
       </div>
     </UFormField>
 
-    <UFormField :label="t('sources.form.type')" name="type" required>
+    <UFormField
+      :label="t('sources.form.type')"
+      name="type"
+      required
+    >
       <USelect
         v-model="form.type"
         :items="sourceTypes"
@@ -140,7 +167,12 @@ function handleSubmit() {
     </UFormField>
 
     <!-- Docker: Container Name -->
-    <UFormField v-if="isDocker" :label="t('sources.form.container')" name="containerName" required>
+    <UFormField
+      v-if="isDocker"
+      :label="t('sources.form.container')"
+      name="containerName"
+      required
+    >
       <USelect
         v-if="containerOptions.length"
         v-model="(form.config as Record<string, string>).containerName"
@@ -160,114 +192,300 @@ function handleSubmit() {
 
     <!-- Docker Folder: folder path -->
     <template v-if="form.type === 'docker_folder'">
-      <UFormField :label="t('sources.form.path')" name="folderPath" required :hint="t('sources.form.path_hint')">
-        <UInput v-model="(form.config as Record<string, string>).folderPath" placeholder="/app/data" class="w-full" />
+      <UFormField
+        :label="t('sources.form.path')"
+        name="folderPath"
+        required
+        :hint="t('sources.form.path_hint')"
+      >
+        <UInput
+          v-model="(form.config as Record<string, string>).folderPath"
+          placeholder="/app/data"
+          class="w-full"
+        />
       </UFormField>
     </template>
 
     <!-- PostgreSQL (direct + docker) -->
     <template v-if="form.type === 'postgresql'">
       <div class="grid grid-cols-2 gap-4">
-        <UFormField :label="t('common.host')" name="host" required>
-          <UInput v-model="(form.config as Record<string, string>).host" placeholder="localhost" class="w-full" />
+        <UFormField
+          :label="t('common.host')"
+          name="host"
+          required
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).host"
+            placeholder="localhost"
+            class="w-full"
+          />
         </UFormField>
-        <UFormField :label="t('common.port')" name="port">
-          <UInputNumber v-model="(form.config as Record<string, number>).port" :default-value="5432" class="w-full" />
+        <UFormField
+          :label="t('common.port')"
+          name="port"
+        >
+          <UInputNumber
+            v-model="(form.config as Record<string, number>).port"
+            :default-value="5432"
+            class="w-full"
+          />
         </UFormField>
       </div>
-      <UFormField :label="t('common.database')" name="database" required>
-        <UInput v-model="(form.config as Record<string, string>).database" placeholder="mydb" class="w-full" />
+      <UFormField
+        :label="t('common.database')"
+        name="database"
+        required
+      >
+        <UInput
+          v-model="(form.config as Record<string, string>).database"
+          placeholder="mydb"
+          class="w-full"
+        />
       </UFormField>
       <div class="grid grid-cols-2 gap-4">
-        <UFormField :label="t('common.username')" name="username" required>
-          <UInput v-model="(form.config as Record<string, string>).username" placeholder="postgres" class="w-full" />
+        <UFormField
+          :label="t('common.username')"
+          name="username"
+          required
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).username"
+            placeholder="postgres"
+            class="w-full"
+          />
         </UFormField>
-        <UFormField :label="t('common.password')" name="password">
-          <UInput v-model="(form.config as Record<string, string>).password" type="password" placeholder="••••••••" class="w-full" />
+        <UFormField
+          :label="t('common.password')"
+          name="password"
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).password"
+            type="password"
+            placeholder="••••••••"
+            class="w-full"
+          />
         </UFormField>
       </div>
       <UFormField :label="t('sources.form.ssl')">
-        <USwitch v-model="(form.config as Record<string, boolean>).ssl" :label="t('sources.form.ssl')" />
+        <USwitch
+          v-model="(form.config as Record<string, boolean>).ssl"
+          :label="t('sources.form.ssl')"
+        />
       </UFormField>
     </template>
 
     <!-- MySQL (direct) -->
     <template v-if="form.type === 'mysql'">
       <div class="grid grid-cols-2 gap-4">
-        <UFormField :label="t('common.host')" name="host" required>
-          <UInput v-model="(form.config as Record<string, string>).host" placeholder="localhost" class="w-full" />
+        <UFormField
+          :label="t('common.host')"
+          name="host"
+          required
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).host"
+            placeholder="localhost"
+            class="w-full"
+          />
         </UFormField>
-        <UFormField :label="t('common.port')" name="port">
-          <UInputNumber v-model="(form.config as Record<string, number>).port" :default-value="3306" class="w-full" />
+        <UFormField
+          :label="t('common.port')"
+          name="port"
+        >
+          <UInputNumber
+            v-model="(form.config as Record<string, number>).port"
+            :default-value="3306"
+            class="w-full"
+          />
         </UFormField>
       </div>
-      <UFormField :label="t('common.database')" name="database" required>
-        <UInput v-model="(form.config as Record<string, string>).database" placeholder="mydb" class="w-full" />
+      <UFormField
+        :label="t('common.database')"
+        name="database"
+        required
+      >
+        <UInput
+          v-model="(form.config as Record<string, string>).database"
+          placeholder="mydb"
+          class="w-full"
+        />
       </UFormField>
       <div class="grid grid-cols-2 gap-4">
-        <UFormField :label="t('common.username')" name="username" required>
-          <UInput v-model="(form.config as Record<string, string>).username" placeholder="root" class="w-full" />
+        <UFormField
+          :label="t('common.username')"
+          name="username"
+          required
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).username"
+            placeholder="root"
+            class="w-full"
+          />
         </UFormField>
-        <UFormField :label="t('common.password')" name="password">
-          <UInput v-model="(form.config as Record<string, string>).password" type="password" placeholder="••••••••" class="w-full" />
+        <UFormField
+          :label="t('common.password')"
+          name="password"
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).password"
+            type="password"
+            placeholder="••••••••"
+            class="w-full"
+          />
         </UFormField>
       </div>
     </template>
 
     <!-- MongoDB (direct) -->
     <template v-if="form.type === 'mongodb'">
-      <UFormField :label="t('sources.form.uri')" name="uri" required hint="mongodb://user:pass@host:27017/db">
-        <UInput v-model="(form.config as Record<string, string>).uri" placeholder="mongodb://localhost:27017/mydb" class="w-full font-mono text-sm" />
+      <UFormField
+        :label="t('sources.form.uri')"
+        name="uri"
+        required
+        hint="mongodb://user:pass@host:27017/db"
+      >
+        <UInput
+          v-model="(form.config as Record<string, string>).uri"
+          placeholder="mongodb://localhost:27017/mydb"
+          class="w-full font-mono text-sm"
+        />
       </UFormField>
-      <UFormField :label="t('common.database')" name="database" :hint="`${t('common.optional')} — ${t('sources.form.uri_overrides')}`">
-        <UInput v-model="(form.config as Record<string, string>).database" placeholder="mydb" class="w-full" />
+      <UFormField
+        :label="t('common.database')"
+        name="database"
+        :hint="`${t('common.optional')} — ${t('sources.form.uri_overrides')}`"
+      >
+        <UInput
+          v-model="(form.config as Record<string, string>).database"
+          placeholder="mydb"
+          class="w-full"
+        />
       </UFormField>
     </template>
 
     <!-- Docker PostgreSQL: db credentials -->
     <template v-if="form.type === 'docker_postgresql'">
-      <UFormField :label="t('common.database')" name="database" required>
-        <UInput v-model="(form.config as Record<string, string>).database" placeholder="mydb" class="w-full" />
+      <UFormField
+        :label="t('common.database')"
+        name="database"
+        required
+      >
+        <UInput
+          v-model="(form.config as Record<string, string>).database"
+          placeholder="mydb"
+          class="w-full"
+        />
       </UFormField>
       <div class="grid grid-cols-2 gap-4">
-        <UFormField :label="t('common.username')" name="username" required>
-          <UInput v-model="(form.config as Record<string, string>).username" placeholder="postgres" class="w-full" />
+        <UFormField
+          :label="t('common.username')"
+          name="username"
+          required
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).username"
+            placeholder="postgres"
+            class="w-full"
+          />
         </UFormField>
-        <UFormField :label="t('common.password')" name="password">
-          <UInput v-model="(form.config as Record<string, string>).password" type="password" placeholder="••••••••" class="w-full" />
+        <UFormField
+          :label="t('common.password')"
+          name="password"
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).password"
+            type="password"
+            placeholder="••••••••"
+            class="w-full"
+          />
         </UFormField>
       </div>
     </template>
 
     <!-- Docker MySQL: db credentials -->
     <template v-if="form.type === 'docker_mysql'">
-      <UFormField :label="t('common.database')" name="database" required>
-        <UInput v-model="(form.config as Record<string, string>).database" placeholder="mydb" class="w-full" />
+      <UFormField
+        :label="t('common.database')"
+        name="database"
+        required
+      >
+        <UInput
+          v-model="(form.config as Record<string, string>).database"
+          placeholder="mydb"
+          class="w-full"
+        />
       </UFormField>
       <div class="grid grid-cols-2 gap-4">
-        <UFormField :label="t('common.username')" name="username" required>
-          <UInput v-model="(form.config as Record<string, string>).username" placeholder="root" class="w-full" />
+        <UFormField
+          :label="t('common.username')"
+          name="username"
+          required
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).username"
+            placeholder="root"
+            class="w-full"
+          />
         </UFormField>
-        <UFormField :label="t('common.password')" name="password">
-          <UInput v-model="(form.config as Record<string, string>).password" type="password" placeholder="••••••••" class="w-full" />
+        <UFormField
+          :label="t('common.password')"
+          name="password"
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).password"
+            type="password"
+            placeholder="••••••••"
+            class="w-full"
+          />
         </UFormField>
       </div>
     </template>
 
     <!-- Docker MongoDB -->
     <template v-if="form.type === 'docker_mongodb'">
-      <UFormField :label="t('sources.form.uri')" name="uri" :hint="`${t('common.optional')} — e.g. mongodb://user:pass@localhost/db`">
-        <UInput v-model="(form.config as Record<string, string>).uri" placeholder="mongodb://localhost:27017/mydb" class="w-full font-mono text-sm" />
+      <UFormField
+        :label="t('sources.form.uri')"
+        name="uri"
+        :hint="`${t('common.optional')} — e.g. mongodb://user:pass@localhost/db`"
+      >
+        <UInput
+          v-model="(form.config as Record<string, string>).uri"
+          placeholder="mongodb://localhost:27017/mydb"
+          class="w-full font-mono text-sm"
+        />
       </UFormField>
-      <UFormField :label="t('common.database')" name="database" :hint="`${t('common.optional')} - dump specific DB`">
-        <UInput v-model="(form.config as Record<string, string>).database" placeholder="mydb" class="w-full" />
+      <UFormField
+        :label="t('common.database')"
+        name="database"
+        :hint="`${t('common.optional')} - dump specific DB`"
+      >
+        <UInput
+          v-model="(form.config as Record<string, string>).database"
+          placeholder="mydb"
+          class="w-full"
+        />
       </UFormField>
       <div class="grid grid-cols-2 gap-4">
-        <UFormField :label="t('common.username')" name="username">
-          <UInput v-model="(form.config as Record<string, string>).username" placeholder="admin" class="w-full" />
+        <UFormField
+          :label="t('common.username')"
+          name="username"
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).username"
+            placeholder="admin"
+            class="w-full"
+          />
         </UFormField>
-        <UFormField :label="t('common.password')" name="password">
-          <UInput v-model="(form.config as Record<string, string>).password" type="password" placeholder="••••••••" class="w-full" />
+        <UFormField
+          :label="t('common.password')"
+          name="password"
+        >
+          <UInput
+            v-model="(form.config as Record<string, string>).password"
+            type="password"
+            placeholder="••••••••"
+            class="w-full"
+          />
         </UFormField>
       </div>
     </template>
@@ -275,16 +493,32 @@ function handleSubmit() {
     <!-- Files -->
     <template v-if="form.type === 'files'">
       <div class="rounded-lg border border-blue-500/30 bg-blue-500/5 px-4 py-3 flex gap-3">
-        <UIcon name="i-lucide-container" class="h-4 w-4 text-blue-500 mt-0.5 shrink-0" />
+        <UIcon
+          name="i-lucide-container"
+          class="h-4 w-4 text-blue-500 mt-0.5 shrink-0"
+        />
         <div class="text-xs text-blue-700 dark:text-blue-400 space-y-1">
-          <p class="font-medium">{{ t('sources.form.docker_hint_title') }}</p>
+          <p class="font-medium">
+            {{ t('sources.form.docker_hint_title') }}
+          </p>
           <p>{{ t('sources.form.docker_hint_body') }}</p>
           <code class="block mt-1 font-mono bg-blue-500/10 rounded px-2 py-1">-v /host/data:/data</code>
-          <p class="text-muted">{{ t('sources.form.docker_hint_then') }} <code class="font-mono">/data</code></p>
+          <p class="text-muted">
+            {{ t('sources.form.docker_hint_then') }} <code class="font-mono">/data</code>
+          </p>
         </div>
       </div>
-      <UFormField :label="t('common.path')" name="path" required :hint="t('sources.form.path_hint')">
-        <UInput v-model="(form.config as Record<string, string>).path" placeholder="/var/data/uploads" class="w-full" />
+      <UFormField
+        :label="t('common.path')"
+        name="path"
+        required
+        :hint="t('sources.form.path_hint')"
+      >
+        <UInput
+          v-model="(form.config as Record<string, string>).path"
+          placeholder="/var/data/uploads"
+          class="w-full"
+        />
       </UFormField>
     </template>
 
@@ -295,12 +529,26 @@ function handleSubmit() {
       name="extraArgs"
       :hint="t('sources.form.extra_args_hint')"
     >
-      <UInput v-model="(form.config as Record<string, string>).extraArgs" placeholder="--schema=public" class="w-full" />
+      <UInput
+        v-model="(form.config as Record<string, string>).extraArgs"
+        placeholder="--schema=public"
+        class="w-full"
+      />
     </UFormField>
 
     <div class="flex justify-end gap-2 pt-2">
-      <UButton to="/sources" color="neutral" variant="ghost">{{ t('common.cancel') }}</UButton>
-      <UButton type="submit" :loading="loading" icon="i-lucide-save">
+      <UButton
+        to="/sources"
+        color="neutral"
+        variant="ghost"
+      >
+        {{ t('common.cancel') }}
+      </UButton>
+      <UButton
+        type="submit"
+        :loading="loading"
+        icon="i-lucide-save"
+      >
         {{ t('common.save') }}
       </UButton>
     </div>

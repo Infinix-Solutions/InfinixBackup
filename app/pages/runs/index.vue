@@ -65,7 +65,7 @@ async function deleteRun() {
   }
 }
 
-const statusTabs: Array<{ label: string; value: 'all' | RunStatus }> = [
+const statusTabs: Array<{ label: string, value: 'all' | RunStatus }> = [
   { label: t('common.all'), value: 'all' },
   { label: 'Running', value: 'running' },
   { label: 'Success', value: 'success' },
@@ -79,9 +79,9 @@ const filteredRuns = computed(() => {
   if (search.value.trim()) {
     const q = search.value.toLowerCase()
     data = data.filter(r =>
-      (r.jobName?.toLowerCase().includes(q) ?? false) ||
-      (r.sourceName?.toLowerCase().includes(q) ?? false) ||
-      r.destinationNames.some(d => d.toLowerCase().includes(q))
+      (r.jobName?.toLowerCase().includes(q) ?? false)
+      || (r.sourceName?.toLowerCase().includes(q) ?? false)
+      || r.destinationNames.some(d => d.toLowerCase().includes(q))
     )
   }
   return data
@@ -115,8 +115,12 @@ onMounted(() => {
   <div class="py-8 px-6 lg:px-8 space-y-6">
     <div class="anim-header flex items-center justify-between">
       <div>
-        <h1 class="text-xl font-semibold tracking-tight">{{ t('runs.title') }}</h1>
-        <p class="text-sm text-muted mt-0.5">{{ t('runs.subtitle') }}</p>
+        <h1 class="text-xl font-semibold tracking-tight">
+          {{ t('runs.title') }}
+        </h1>
+        <p class="text-sm text-muted mt-0.5">
+          {{ t('runs.subtitle') }}
+        </p>
       </div>
     </div>
 
@@ -172,22 +176,47 @@ onMounted(() => {
         </div>
       </template>
 
-      <div v-if="!runs.length" class="py-16 text-center">
+      <div
+        v-if="!runs.length"
+        class="py-16 text-center"
+      >
         <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-elevated">
-          <UIcon name="i-lucide-history" class="h-7 w-7 text-muted" />
+          <UIcon
+            name="i-lucide-history"
+            class="h-7 w-7 text-muted"
+          />
         </div>
-        <p class="text-sm font-medium mb-1">{{ t('runs.no_runs') }}</p>
+        <p class="text-sm font-medium mb-1">
+          {{ t('runs.no_runs') }}
+        </p>
       </div>
 
-      <div v-else-if="!filteredRuns.length" class="py-12 text-center">
-        <UIcon name="i-lucide-search-x" class="h-8 w-8 text-muted mx-auto mb-3" />
-        <p class="text-sm text-muted mb-2">No runs match the current filter</p>
-        <UButton size="xs" variant="ghost" color="neutral" @click="search = ''; statusFilter = 'all'">
+      <div
+        v-else-if="!filteredRuns.length"
+        class="py-12 text-center"
+      >
+        <UIcon
+          name="i-lucide-search-x"
+          class="h-8 w-8 text-muted mx-auto mb-3"
+        />
+        <p class="text-sm text-muted mb-2">
+          No runs match the current filter
+        </p>
+        <UButton
+          size="xs"
+          variant="ghost"
+          color="neutral"
+          @click="search = ''; statusFilter = 'all'"
+        >
           Clear filters
         </UButton>
       </div>
 
-      <UTable v-else :data="filteredRuns" :columns="columns">
+      <UTable
+        v-else
+        :data="filteredRuns"
+        :columns="columns"
+      >
         <template #status-cell="{ row }">
           <div class="flex items-center gap-1.5">
             <UIcon
@@ -227,7 +256,10 @@ onMounted(() => {
         </template>
         <template #actions-cell="{ row }">
           <div class="flex justify-end gap-1">
-            <UTooltip v-if="row.original.status === 'success' && row.original.fileName" :text="t('runs.download')">
+            <UTooltip
+              v-if="row.original.status === 'success' && row.original.fileName"
+              :text="t('runs.download')"
+            >
               <UButton
                 :href="`/api/runs/${row.original.id}/download`"
                 external
@@ -260,15 +292,39 @@ onMounted(() => {
       </UTable>
     </UCard>
 
-    <UModal v-model:open="deleteOpen" :title="t('runs.delete_title')">
+    <UModal
+      v-model:open="deleteOpen"
+      :title="t('runs.delete_title')"
+    >
       <template #body>
-        <p class="text-sm text-muted">{{ t('runs.delete_msg') }}</p>
-        <p v-if="deleteTarget?.fileName" class="mt-2 text-xs font-mono text-muted bg-elevated rounded px-2 py-1">{{ deleteTarget.fileName }}</p>
+        <p class="text-sm text-muted">
+          {{ t('runs.delete_msg') }}
+        </p>
+        <p
+          v-if="deleteTarget?.fileName"
+          class="mt-2 text-xs font-mono text-muted bg-elevated rounded px-2 py-1"
+        >
+          {{ deleteTarget.fileName }}
+        </p>
       </template>
       <template #footer>
         <div class="flex justify-end gap-2">
-          <UButton color="neutral" variant="ghost" size="sm" @click="deleteTarget = null">{{ t('common.cancel') }}</UButton>
-          <UButton color="error" size="sm" :loading="deleting" @click="deleteRun">{{ t('common.delete') }}</UButton>
+          <UButton
+            color="neutral"
+            variant="ghost"
+            size="sm"
+            @click="deleteTarget = null"
+          >
+            {{ t('common.cancel') }}
+          </UButton>
+          <UButton
+            color="error"
+            size="sm"
+            :loading="deleting"
+            @click="deleteRun"
+          >
+            {{ t('common.delete') }}
+          </UButton>
         </div>
       </template>
     </UModal>

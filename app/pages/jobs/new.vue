@@ -27,10 +27,15 @@ async function handleSubmit(data: JobFormData) {
         :items="[{ label: t('jobs.title'), to: '/jobs' }, { label: t('jobs.new_title') }]"
         class="mb-3"
       />
-      <h1 class="text-xl font-semibold tracking-tight">{{ t('jobs.new_title') }}</h1>
+      <h1 class="text-xl font-semibold tracking-tight">
+        {{ t('jobs.new_title') }}
+      </h1>
     </div>
     <UCard>
-      <JobForm :loading="loading" @submit="handleSubmit" />
+      <JobForm
+        :loading="loading"
+        @submit="handleSubmit"
+      />
     </UCard>
   </div>
 </template>

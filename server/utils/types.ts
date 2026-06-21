@@ -100,13 +100,13 @@ export interface SshConnectionConfig {
 }
 
 export type CompressionType = 'none' | 'gzip' | 'zip'
-export type SourceType =
-  | 'postgresql'
-  | 'mysql'
-  | 'mongodb'
-  | 'files'
-  | 'docker_postgresql'
-  | 'docker_mysql'
-  | 'docker_mongodb'
-  | 'docker_folder'
+export type SourceType
+  = | 'postgresql'
+    | 'mysql'
+    | 'mongodb'
+    | 'files'
+    | 'docker_postgresql'
+    | 'docker_mysql'
+    | 'docker_mongodb'
+    | 'docker_folder'
 export type DestinationType = 's3' | 'ftp' | 'sftp' | 'local'

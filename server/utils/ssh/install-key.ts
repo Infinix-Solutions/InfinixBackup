@@ -14,7 +14,7 @@ function testTcp(host: string, port: number, timeoutMs = 5000): Promise<void> {
 }
 
 export async function installPublicKey(
-  config: { host: string; port: number; username: string; password: string },
+  config: { host: string, port: number, username: string, password: string },
   publicKey: string
 ): Promise<void> {
   logger.info(CAT, `Starting key installation → ${config.username}@${config.host}:${config.port}`)

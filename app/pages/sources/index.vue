@@ -56,10 +56,18 @@ onMounted(() => {
   <div class="py-8 px-6 lg:px-8 space-y-6">
     <div class="anim-header flex items-center justify-between">
       <div>
-        <h1 class="text-xl font-semibold tracking-tight">{{ t('sources.title') }}</h1>
-        <p class="text-sm text-muted mt-0.5">{{ t('sources.subtitle') }}</p>
+        <h1 class="text-xl font-semibold tracking-tight">
+          {{ t('sources.title') }}
+        </h1>
+        <p class="text-sm text-muted mt-0.5">
+          {{ t('sources.subtitle') }}
+        </p>
       </div>
-      <UButton to="/sources/new" icon="i-lucide-plus" size="sm">
+      <UButton
+        to="/sources/new"
+        icon="i-lucide-plus"
+        size="sm"
+      >
         {{ t('sources.add') }}
       </UButton>
     </div>
@@ -81,25 +89,55 @@ onMounted(() => {
         </div>
       </template>
 
-      <div v-if="!sources.length" class="py-16 text-center">
+      <div
+        v-if="!sources.length"
+        class="py-16 text-center"
+      >
         <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-elevated">
-          <UIcon name="i-lucide-database" class="h-7 w-7 text-muted" />
+          <UIcon
+            name="i-lucide-database"
+            class="h-7 w-7 text-muted"
+          />
         </div>
-        <p class="text-sm font-medium mb-1">{{ t('sources.no_sources') }}</p>
-        <UButton to="/sources/new" size="sm" icon="i-lucide-plus" class="mt-3">
+        <p class="text-sm font-medium mb-1">
+          {{ t('sources.no_sources') }}
+        </p>
+        <UButton
+          to="/sources/new"
+          size="sm"
+          icon="i-lucide-plus"
+          class="mt-3"
+        >
           {{ t('sources.add') }}
         </UButton>
       </div>
 
-      <div v-else-if="!filteredSources.length" class="py-12 text-center">
-        <UIcon name="i-lucide-search-x" class="h-8 w-8 text-muted mx-auto mb-3" />
-        <p class="text-sm text-muted mb-2">No sources match "{{ search }}"</p>
-        <UButton size="xs" variant="ghost" color="neutral" @click="search = ''">
+      <div
+        v-else-if="!filteredSources.length"
+        class="py-12 text-center"
+      >
+        <UIcon
+          name="i-lucide-search-x"
+          class="h-8 w-8 text-muted mx-auto mb-3"
+        />
+        <p class="text-sm text-muted mb-2">
+          No sources match "{{ search }}"
+        </p>
+        <UButton
+          size="xs"
+          variant="ghost"
+          color="neutral"
+          @click="search = ''"
+        >
           Clear search
         </UButton>
       </div>
 
-      <UTable v-else :data="filteredSources" :columns="columns">
+      <UTable
+        v-else
+        :data="filteredSources"
+        :columns="columns"
+      >
         <template #name-cell="{ row }">
           <div class="flex items-center gap-2.5">
             <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-elevated">
@@ -159,16 +197,30 @@ onMounted(() => {
       </UTable>
     </UCard>
 
-    <UModal v-model:open="showDelete" :title="t('sources.delete_title')">
+    <UModal
+      v-model:open="showDelete"
+      :title="t('sources.delete_title')"
+    >
       <template #body>
-        <p class="text-sm text-muted">{{ t('sources.delete_msg') }}</p>
+        <p class="text-sm text-muted">
+          {{ t('sources.delete_msg') }}
+        </p>
       </template>
       <template #footer>
         <div class="flex justify-end gap-2">
-          <UButton color="neutral" variant="ghost" size="sm" @click="showDelete = false">
+          <UButton
+            color="neutral"
+            variant="ghost"
+            size="sm"
+            @click="showDelete = false"
+          >
             {{ t('common.cancel') }}
           </UButton>
-          <UButton color="error" size="sm" @click="deleteSource(deleteId!)">
+          <UButton
+            color="error"
+            size="sm"
+            @click="deleteSource(deleteId!)"
+          >
             {{ t('common.delete') }}
           </UButton>
         </div>

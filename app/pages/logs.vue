@@ -36,7 +36,7 @@ const LEVEL_BG: Record<string, string> = {
 }
 
 const filteredLogs = computed(() => {
-  return logs.value.filter(l => {
+  return logs.value.filter((l) => {
     if (filterLevel.value !== 'all' && l.level !== filterLevel.value) return false
     if (filterCat.value && !l.category.includes(filterCat.value)) return false
     return true
@@ -100,13 +100,24 @@ watch(autoScroll, (v) => { if (v) scrollToBottom() })
     <!-- Header -->
     <div class="flex items-center justify-between flex-shrink-0">
       <div>
-        <h1 class="text-xl font-semibold tracking-tight">Server Logs</h1>
-        <p class="text-sm text-muted mt-0.5">Backend log stream (last 2000 entries, in-memory)</p>
+        <h1 class="text-xl font-semibold tracking-tight">
+          Server Logs
+        </h1>
+        <p class="text-sm text-muted mt-0.5">
+          Backend log stream (last 2000 entries, in-memory)
+        </p>
       </div>
       <div class="flex items-center gap-2">
-        <UBadge :color="autoRefresh ? 'success' : 'neutral'" variant="subtle" size="sm">
+        <UBadge
+          :color="autoRefresh ? 'success' : 'neutral'"
+          variant="subtle"
+          size="sm"
+        >
           <span class="flex items-center gap-1">
-            <span v-if="autoRefresh" class="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+            <span
+              v-if="autoRefresh"
+              class="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"
+            />
             {{ autoRefresh ? 'Live' : 'Paused' }}
           </span>
         </UBadge>
@@ -125,8 +136,20 @@ watch(autoScroll, (v) => { if (v) scrollToBottom() })
           :class="autoScroll ? 'text-primary-500' : ''"
           @click="autoScroll = !autoScroll"
         />
-        <UButton icon="i-lucide-refresh-cw" size="sm" color="neutral" variant="ghost" @click="fetchLogs()" />
-        <UButton icon="i-lucide-trash-2" size="sm" color="error" variant="ghost" @click="clearLogs" />
+        <UButton
+          icon="i-lucide-refresh-cw"
+          size="sm"
+          color="neutral"
+          variant="ghost"
+          @click="fetchLogs()"
+        />
+        <UButton
+          icon="i-lucide-trash-2"
+          size="sm"
+          color="error"
+          variant="ghost"
+          @click="clearLogs"
+        />
       </div>
     </div>
 
@@ -140,7 +163,9 @@ watch(autoScroll, (v) => { if (v) scrollToBottom() })
           :color="filterLevel === lvl ? 'primary' : 'neutral'"
           :variant="filterLevel === lvl ? 'solid' : 'ghost'"
           @click="filterLevel = lvl"
-        >{{ lvl }}</UButton>
+        >
+          {{ lvl }}
+        </UButton>
       </div>
       <UInput
         v-model="filterCat"
@@ -159,7 +184,10 @@ watch(autoScroll, (v) => { if (v) scrollToBottom() })
       style="height: calc(100svh - 16rem)"
       @scroll="autoScroll = false"
     >
-      <div v-if="!filteredLogs.length" class="text-gray-600 text-center py-8">
+      <div
+        v-if="!filteredLogs.length"
+        class="text-gray-600 text-center py-8"
+      >
         No log entries yet. Trigger an action to see logs here.
       </div>
       <div

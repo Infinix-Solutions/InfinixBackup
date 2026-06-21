@@ -188,7 +188,7 @@ export async function dispatchWebhooks(event: string, data: WebhookPayload, jobI
     }
   }
 
-  const targets = [...webhookMap.values()].filter(w => {
+  const targets = [...webhookMap.values()].filter((w) => {
     if (!(w.events as string[]).includes(event)) return false
     return w.jobIds.length === 0 || w.jobIds.includes(jobId)
   })

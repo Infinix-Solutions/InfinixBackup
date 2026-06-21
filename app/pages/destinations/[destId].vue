@@ -42,14 +42,26 @@ async function testConnection() {
         class="mb-3"
       />
       <div class="flex items-center justify-between">
-        <h1 class="text-xl font-semibold tracking-tight">{{ t('destinations.edit_title') }}</h1>
-        <UButton icon="i-lucide-plug-zap" color="neutral" variant="outline" size="sm" @click="testConnection">
+        <h1 class="text-xl font-semibold tracking-tight">
+          {{ t('destinations.edit_title') }}
+        </h1>
+        <UButton
+          icon="i-lucide-plug-zap"
+          color="neutral"
+          variant="outline"
+          size="sm"
+          @click="testConnection"
+        >
           {{ t('common.test_connection') }}
         </UButton>
       </div>
     </div>
     <UCard v-if="destination">
-      <DestinationForm :initial="destination" :loading="loading" @submit="handleSubmit" />
+      <DestinationForm
+        :initial="destination"
+        :loading="loading"
+        @submit="handleSubmit"
+      />
     </UCard>
   </div>
 </template>

@@ -56,10 +56,18 @@ onMounted(() => {
   <div class="py-8 px-6 lg:px-8 space-y-6">
     <div class="anim-header flex items-center justify-between">
       <div>
-        <h1 class="text-xl font-semibold tracking-tight">{{ t('destinations.title') }}</h1>
-        <p class="text-sm text-muted mt-0.5">{{ t('destinations.subtitle') }}</p>
+        <h1 class="text-xl font-semibold tracking-tight">
+          {{ t('destinations.title') }}
+        </h1>
+        <p class="text-sm text-muted mt-0.5">
+          {{ t('destinations.subtitle') }}
+        </p>
       </div>
-      <UButton to="/destinations/new" icon="i-lucide-plus" size="sm">
+      <UButton
+        to="/destinations/new"
+        icon="i-lucide-plus"
+        size="sm"
+      >
         {{ t('destinations.add') }}
       </UButton>
     </div>
@@ -81,25 +89,55 @@ onMounted(() => {
         </div>
       </template>
 
-      <div v-if="!destinations.length" class="py-16 text-center">
+      <div
+        v-if="!destinations.length"
+        class="py-16 text-center"
+      >
         <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-elevated">
-          <UIcon name="i-lucide-hard-drive" class="h-7 w-7 text-muted" />
+          <UIcon
+            name="i-lucide-hard-drive"
+            class="h-7 w-7 text-muted"
+          />
         </div>
-        <p class="text-sm font-medium mb-1">{{ t('destinations.no_destinations') }}</p>
-        <UButton to="/destinations/new" size="sm" icon="i-lucide-plus" class="mt-3">
+        <p class="text-sm font-medium mb-1">
+          {{ t('destinations.no_destinations') }}
+        </p>
+        <UButton
+          to="/destinations/new"
+          size="sm"
+          icon="i-lucide-plus"
+          class="mt-3"
+        >
           {{ t('destinations.add') }}
         </UButton>
       </div>
 
-      <div v-else-if="!filteredDestinations.length" class="py-12 text-center">
-        <UIcon name="i-lucide-search-x" class="h-8 w-8 text-muted mx-auto mb-3" />
-        <p class="text-sm text-muted mb-2">No destinations match "{{ search }}"</p>
-        <UButton size="xs" variant="ghost" color="neutral" @click="search = ''">
+      <div
+        v-else-if="!filteredDestinations.length"
+        class="py-12 text-center"
+      >
+        <UIcon
+          name="i-lucide-search-x"
+          class="h-8 w-8 text-muted mx-auto mb-3"
+        />
+        <p class="text-sm text-muted mb-2">
+          No destinations match "{{ search }}"
+        </p>
+        <UButton
+          size="xs"
+          variant="ghost"
+          color="neutral"
+          @click="search = ''"
+        >
           Clear search
         </UButton>
       </div>
 
-      <UTable v-else :data="filteredDestinations" :columns="columns">
+      <UTable
+        v-else
+        :data="filteredDestinations"
+        :columns="columns"
+      >
         <template #name-cell="{ row }">
           <div class="flex items-center gap-2.5">
             <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-elevated">
@@ -159,16 +197,30 @@ onMounted(() => {
       </UTable>
     </UCard>
 
-    <UModal v-model:open="showDelete" :title="t('destinations.delete_title')">
+    <UModal
+      v-model:open="showDelete"
+      :title="t('destinations.delete_title')"
+    >
       <template #body>
-        <p class="text-sm text-muted">{{ t('destinations.delete_msg') }}</p>
+        <p class="text-sm text-muted">
+          {{ t('destinations.delete_msg') }}
+        </p>
       </template>
       <template #footer>
         <div class="flex justify-end gap-2">
-          <UButton color="neutral" variant="ghost" size="sm" @click="showDelete = false">
+          <UButton
+            color="neutral"
+            variant="ghost"
+            size="sm"
+            @click="showDelete = false"
+          >
             {{ t('common.cancel') }}
           </UButton>
-          <UButton color="error" size="sm" @click="deleteDestination(deleteId!)">
+          <UButton
+            color="error"
+            size="sm"
+            @click="deleteDestination(deleteId!)"
+          >
             {{ t('common.delete') }}
           </UButton>
         </div>

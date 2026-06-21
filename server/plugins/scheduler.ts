@@ -8,9 +8,9 @@ import { applyRetentionAll } from '../utils/retention'
 type ScheduledTask = ReturnType<typeof cron.schedule>
 
 declare global {
-  // eslint-disable-next-line no-var
+
   var __backupScheduler: Map<string, ScheduledTask> | undefined
-  // eslint-disable-next-line no-var
+
   var __retentionTask: ScheduledTask | undefined
 }
 

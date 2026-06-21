@@ -129,7 +129,7 @@ export const jobDestinations = pgTable('job_destinations', {
   jobId: uuid('job_id').notNull().references(() => backupJobs.id, { onDelete: 'cascade' }),
   destinationId: uuid('destination_id').notNull().references(() => backupDestinations.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at').notNull().defaultNow()
-}, (t) => [primaryKey({ columns: [t.jobId, t.destinationId] })])
+}, t => [primaryKey({ columns: [t.jobId, t.destinationId] })])
 
 export const sshConnectionsRelations = relations(sshConnections, ({ many }) => ({
   sources: many(backupSources)
@@ -194,8 +194,8 @@ export const webhooks = pgTable('webhooks', {
 
 export const jobWebhooks = pgTable('job_webhooks', {
   jobId: uuid('job_id').notNull().references(() => backupJobs.id, { onDelete: 'cascade' }),
-  webhookId: uuid('webhook_id').notNull().references(() => webhooks.id, { onDelete: 'cascade' }),
-}, (t) => [primaryKey({ columns: [t.jobId, t.webhookId] })])
+  webhookId: uuid('webhook_id').notNull().references(() => webhooks.id, { onDelete: 'cascade' })
+}, t => [primaryKey({ columns: [t.jobId, t.webhookId] })])
 
 export type SshConnection = typeof sshConnections.$inferSelect
 export type NewSshConnection = typeof sshConnections.$inferInsert

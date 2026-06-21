@@ -63,7 +63,9 @@ const initialData = computed(() =>
         class="mb-3"
       />
       <div class="flex items-center justify-between">
-        <h1 class="text-xl font-semibold tracking-tight">{{ t('jobs.edit_title') }}</h1>
+        <h1 class="text-xl font-semibold tracking-tight">
+          {{ t('jobs.edit_title') }}
+        </h1>
         <div class="flex gap-2">
           <UButton
             icon="i-lucide-history"
@@ -87,7 +89,11 @@ const initialData = computed(() =>
     </div>
 
     <UCard v-if="job">
-      <JobForm :initial="initialData" :loading="loading" @submit="handleSubmit" />
+      <JobForm
+        :initial="initialData"
+        :loading="loading"
+        @submit="handleSubmit"
+      />
     </UCard>
   </div>
 </template>

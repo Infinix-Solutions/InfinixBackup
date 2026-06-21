@@ -22,7 +22,7 @@ interface TerminalLine {
 const termLines = ref<TerminalLine[]>([
   { text: `${connection.value?.name} — ${connection.value?.username}@${connection.value?.host}:${connection.value?.port}`, state: 'info' },
   { text: 'Click "Check Capabilities" to probe the server.', state: 'pending' },
-  { text: 'Provide a password when saving to reinstall the key.', state: 'pending' },
+  { text: 'Provide a password when saving to reinstall the key.', state: 'pending' }
 ])
 
 function addLine(text: string, state: TerminalLine['state'] = 'pending') {
@@ -37,7 +37,7 @@ function termSet(i: number, state: TerminalLine['state'], text?: string) {
   }
 }
 
-async function save(data: { name: string; host: string; port: number; username: string; password?: string }) {
+async function save(data: { name: string, host: string, port: number, username: string, password?: string }) {
   loading.value = true
   const iSave = addLine('Saving changes...', 'running')
   const iInstall = data.password ? addLine(`Installing key on ${data.username}@${data.host}:${data.port}`, 'pending') : -1
@@ -70,7 +70,7 @@ async function probe() {
       result.docker && 'Docker',
       result.postgres && 'PostgreSQL',
       result.mysql && 'MySQL',
-      result.mongo && 'MongoDB',
+      result.mongo && 'MongoDB'
     ].filter(Boolean)
     addLine(`Capabilities: ${caps.length ? caps.join(', ') : 'none detected'}`, 'done')
     if (result.containers.length) {
@@ -114,24 +114,51 @@ async function deleteConnection() {
   <div class="py-8 px-6 lg:px-8">
     <div class="flex items-center justify-between mb-6">
       <div class="flex items-center gap-3">
-        <UButton to="/ssh-connections" icon="i-lucide-arrow-left" color="neutral" variant="ghost" size="sm" />
+        <UButton
+          to="/ssh-connections"
+          icon="i-lucide-arrow-left"
+          color="neutral"
+          variant="ghost"
+          size="sm"
+        />
         <div>
-          <h1 class="text-xl font-semibold tracking-tight">{{ connection?.name }}</h1>
-          <p class="text-sm text-muted mt-0.5 font-mono">{{ connection?.username }}@{{ connection?.host }}:{{ connection?.port }}</p>
+          <h1 class="text-xl font-semibold tracking-tight">
+            {{ connection?.name }}
+          </h1>
+          <p class="text-sm text-muted mt-0.5 font-mono">
+            {{ connection?.username }}@{{ connection?.host }}:{{ connection?.port }}
+          </p>
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <UButton icon="i-lucide-plug" color="primary" variant="outline" size="sm" @click="probe">
+        <UButton
+          icon="i-lucide-plug"
+          color="primary"
+          variant="outline"
+          size="sm"
+          @click="probe"
+        >
           {{ t('ssh.probe') }}
         </UButton>
-        <UButton icon="i-lucide-trash-2" color="error" variant="ghost" size="sm" @click="showDelete = true" />
+        <UButton
+          icon="i-lucide-trash-2"
+          color="error"
+          variant="ghost"
+          size="sm"
+          @click="showDelete = true"
+        />
       </div>
     </div>
 
     <div class="grid grid-cols-2 gap-6">
       <!-- Left: edit form -->
       <UCard>
-        <SshConnectionForm v-if="connection" :initial="connection" :loading="loading" @submit="save" />
+        <SshConnectionForm
+          v-if="connection"
+          :initial="connection"
+          :loading="loading"
+          @submit="save"
+        />
       </UCard>
 
       <!-- Right: terminal + public key -->
@@ -144,25 +171,52 @@ async function deleteConnection() {
                 <span class="h-3 w-3 rounded-full bg-yellow-500/70" />
                 <span class="h-3 w-3 rounded-full bg-green-500/70" />
               </div>
-              <p class="text-xs font-mono text-muted ml-1">infinix-ssh-console</p>
+              <p class="text-xs font-mono text-muted ml-1">
+                infinix-ssh-console
+              </p>
             </div>
           </template>
           <div class="bg-gray-950 dark:bg-black rounded-lg p-4 font-mono text-xs space-y-2 min-h-40">
-            <div v-for="(line, i) in termLines" :key="i" class="flex items-start gap-2">
+            <div
+              v-for="(line, i) in termLines"
+              :key="i"
+              class="flex items-start gap-2"
+            >
               <span class="mt-0.5 shrink-0">
-                <UIcon v-if="line.state === 'running'" name="i-lucide-loader-circle" class="h-3.5 w-3.5 text-blue-400 animate-spin" />
-                <UIcon v-else-if="line.state === 'done'" name="i-lucide-check" class="h-3.5 w-3.5 text-green-400" />
-                <UIcon v-else-if="line.state === 'error'" name="i-lucide-x" class="h-3.5 w-3.5 text-red-400" />
-                <UIcon v-else-if="line.state === 'info'" name="i-lucide-terminal" class="h-3.5 w-3.5 text-primary-400" />
-                <span v-else class="inline-block h-3.5 w-3.5 text-gray-600">·</span>
+                <UIcon
+                  v-if="line.state === 'running'"
+                  name="i-lucide-loader-circle"
+                  class="h-3.5 w-3.5 text-blue-400 animate-spin"
+                />
+                <UIcon
+                  v-else-if="line.state === 'done'"
+                  name="i-lucide-check"
+                  class="h-3.5 w-3.5 text-green-400"
+                />
+                <UIcon
+                  v-else-if="line.state === 'error'"
+                  name="i-lucide-x"
+                  class="h-3.5 w-3.5 text-red-400"
+                />
+                <UIcon
+                  v-else-if="line.state === 'info'"
+                  name="i-lucide-terminal"
+                  class="h-3.5 w-3.5 text-primary-400"
+                />
+                <span
+                  v-else
+                  class="inline-block h-3.5 w-3.5 text-gray-600"
+                >·</span>
               </span>
-              <span :class="{
-                'text-primary-400 font-semibold': line.state === 'info',
-                'text-gray-400': line.state === 'pending',
-                'text-gray-200': line.state === 'running',
-                'text-green-400': line.state === 'done',
-                'text-red-400': line.state === 'error'
-              }">{{ line.text }}</span>
+              <span
+                :class="{
+                  'text-primary-400 font-semibold': line.state === 'info',
+                  'text-gray-400': line.state === 'pending',
+                  'text-gray-200': line.state === 'running',
+                  'text-green-400': line.state === 'done',
+                  'text-red-400': line.state === 'error'
+                }"
+              >{{ line.text }}</span>
             </div>
           </div>
         </UCard>
@@ -171,14 +225,26 @@ async function deleteConnection() {
         <UCard>
           <template #header>
             <div class="flex items-center justify-between">
-              <p class="text-sm font-medium">{{ t('ssh.public_key_label') }}</p>
+              <p class="text-sm font-medium">
+                {{ t('ssh.public_key_label') }}
+              </p>
               <div class="flex items-center gap-1">
                 <UButton
                   :icon="copied ? 'i-lucide-copy-check' : 'i-lucide-copy'"
-                  size="xs" color="neutral" variant="ghost"
+                  size="xs"
+                  color="neutral"
+                  variant="ghost"
                   @click="copyKey"
-                >{{ t('ssh.copy_key') }}</UButton>
-                <UButton icon="i-lucide-download" size="xs" color="neutral" variant="ghost" @click="downloadKey">
+                >
+                  {{ t('ssh.copy_key') }}
+                </UButton>
+                <UButton
+                  icon="i-lucide-download"
+                  size="xs"
+                  color="neutral"
+                  variant="ghost"
+                  @click="downloadKey"
+                >
                   {{ t('ssh.download_key') }}
                 </UButton>
               </div>
@@ -189,14 +255,32 @@ async function deleteConnection() {
       </div>
     </div>
 
-    <UModal v-model:open="showDelete" :title="t('ssh.delete_title')">
+    <UModal
+      v-model:open="showDelete"
+      :title="t('ssh.delete_title')"
+    >
       <template #body>
-        <p class="text-sm text-muted">{{ t('ssh.delete_msg') }}</p>
+        <p class="text-sm text-muted">
+          {{ t('ssh.delete_msg') }}
+        </p>
       </template>
       <template #footer>
         <div class="flex justify-end gap-2">
-          <UButton color="neutral" variant="ghost" size="sm" @click="showDelete = false">{{ t('common.cancel') }}</UButton>
-          <UButton color="error" size="sm" @click="deleteConnection">{{ t('common.delete') }}</UButton>
+          <UButton
+            color="neutral"
+            variant="ghost"
+            size="sm"
+            @click="showDelete = false"
+          >
+            {{ t('common.cancel') }}
+          </UButton>
+          <UButton
+            color="error"
+            size="sm"
+            @click="deleteConnection"
+          >
+            {{ t('common.delete') }}
+          </UButton>
         </div>
       </template>
     </UModal>

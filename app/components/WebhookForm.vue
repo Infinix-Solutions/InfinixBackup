@@ -81,9 +81,17 @@ function handleSubmit() {
 </script>
 
 <template>
-  <UForm :state="form" class="space-y-5" @submit="handleSubmit">
+  <UForm
+    :state="form"
+    class="space-y-5"
+    @submit="handleSubmit"
+  >
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <UFormField :label="t('webhooks.form.name')" name="name" required>
+      <UFormField
+        :label="t('webhooks.form.name')"
+        name="name"
+        required
+      >
         <UInput
           v-model="form.name"
           :placeholder="t('webhooks.form.name_ph')"
@@ -91,7 +99,11 @@ function handleSubmit() {
         />
       </UFormField>
 
-      <UFormField :label="t('webhooks.form.type')" name="type" required>
+      <UFormField
+        :label="t('webhooks.form.type')"
+        name="type"
+        required
+      >
         <USelect
           v-model="form.type"
           :items="typeOptions"
@@ -102,7 +114,12 @@ function handleSubmit() {
       </UFormField>
     </div>
 
-    <UFormField :label="t('webhooks.form.url')" name="url" required :hint="urlHint">
+    <UFormField
+      :label="t('webhooks.form.url')"
+      name="url"
+      required
+      :hint="urlHint"
+    >
       <UInput
         v-model="form.url"
         :placeholder="form.type === 'openwa' ? 'http://localhost:8002' : 'https://'"
@@ -111,14 +128,24 @@ function handleSubmit() {
     </UFormField>
 
     <template v-if="form.type === 'openwa'">
-      <UFormField :label="t('webhooks.form.session_id')" name="sessionId" required :hint="t('webhooks.form.session_id_hint')">
+      <UFormField
+        :label="t('webhooks.form.session_id')"
+        name="sessionId"
+        required
+        :hint="t('webhooks.form.session_id_hint')"
+      >
         <UInput
           v-model="form.sessionId"
           placeholder="my-session"
           class="w-full"
         />
       </UFormField>
-      <UFormField :label="t('webhooks.form.chat_id')" name="chatId" required :hint="t('webhooks.form.chat_id_hint')">
+      <UFormField
+        :label="t('webhooks.form.chat_id')"
+        name="chatId"
+        required
+        :hint="t('webhooks.form.chat_id_hint')"
+      >
         <UInput
           v-model="form.chatId"
           placeholder="48123456789@c.us"
@@ -127,7 +154,11 @@ function handleSubmit() {
       </UFormField>
     </template>
 
-    <UFormField :label="t('webhooks.form.secret')" name="secret" :hint="secretHint">
+    <UFormField
+      :label="t('webhooks.form.secret')"
+      name="secret"
+      :hint="secretHint"
+    >
       <UInput
         v-model="form.secret"
         type="password"
@@ -136,7 +167,10 @@ function handleSubmit() {
       />
     </UFormField>
 
-    <UFormField :label="t('webhooks.form.events')" name="events">
+    <UFormField
+      :label="t('webhooks.form.events')"
+      name="events"
+    >
       <div class="flex flex-col gap-2">
         <label class="flex items-center gap-2 cursor-pointer">
           <UCheckbox
@@ -161,7 +195,11 @@ function handleSubmit() {
       </div>
     </UFormField>
 
-    <UFormField :label="t('webhooks.form.jobs')" name="jobIds" :hint="t('webhooks.form.jobs_hint')">
+    <UFormField
+      :label="t('webhooks.form.jobs')"
+      name="jobIds"
+      :hint="t('webhooks.form.jobs_hint')"
+    >
       <USelect
         v-model="form.jobIds"
         :items="jobItems"
@@ -173,7 +211,11 @@ function handleSubmit() {
       />
     </UFormField>
 
-    <UFormField :label="t('webhooks.form.message_template')" name="messageTemplate" :hint="t('webhooks.form.message_template_hint')">
+    <UFormField
+      :label="t('webhooks.form.message_template')"
+      name="messageTemplate"
+      :hint="t('webhooks.form.message_template_hint')"
+    >
       <div class="space-y-2">
         <textarea
           ref="templateRef"
@@ -183,7 +225,9 @@ function handleSubmit() {
           class="w-full rounded-md border border-default bg-default text-sm font-mono px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-y"
         />
         <div class="rounded-lg border border-default bg-muted/40 p-3">
-          <p class="text-xs text-muted font-medium mb-2 uppercase tracking-wide">{{ t('webhooks.form.placeholders') }}</p>
+          <p class="text-xs text-muted font-medium mb-2 uppercase tracking-wide">
+            {{ t('webhooks.form.placeholders') }}
+          </p>
           <div class="flex flex-wrap gap-1.5">
             <button
               v-for="ph in PLACEHOLDERS"
@@ -196,18 +240,34 @@ function handleSubmit() {
               {{ ph.key }}
             </button>
           </div>
-          <p class="text-xs text-muted mt-1.5">{{ t('webhooks.form.placeholders_hint') }}</p>
+          <p class="text-xs text-muted mt-1.5">
+            {{ t('webhooks.form.placeholders_hint') }}
+          </p>
         </div>
       </div>
     </UFormField>
 
-    <UFormField :label="t('webhooks.form.enabled')" name="enabled">
+    <UFormField
+      :label="t('webhooks.form.enabled')"
+      name="enabled"
+    >
       <USwitch v-model="form.enabled" />
     </UFormField>
 
     <div class="flex items-center gap-3 pt-2">
-      <UButton type="submit" :loading="loading">{{ t('common.save') }}</UButton>
-      <UButton color="neutral" variant="ghost" @click="$router.back()">{{ t('common.cancel') }}</UButton>
+      <UButton
+        type="submit"
+        :loading="loading"
+      >
+        {{ t('common.save') }}
+      </UButton>
+      <UButton
+        color="neutral"
+        variant="ghost"
+        @click="$router.back()"
+      >
+        {{ t('common.cancel') }}
+      </UButton>
     </div>
   </UForm>
 </template>

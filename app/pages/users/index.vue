@@ -87,20 +87,34 @@ onMounted(() => {
   <div class="py-8 px-6 lg:px-8 space-y-6">
     <div class="anim-header flex items-center justify-between">
       <div>
-        <h1 class="text-xl font-semibold tracking-tight">{{ t('users.title') }}</h1>
-        <p class="text-sm text-muted mt-0.5">{{ t('users.subtitle') }}</p>
+        <h1 class="text-xl font-semibold tracking-tight">
+          {{ t('users.title') }}
+        </h1>
+        <p class="text-sm text-muted mt-0.5">
+          {{ t('users.subtitle') }}
+        </p>
       </div>
-      <UButton icon="i-lucide-user-plus" size="sm" @click="showAdd = true">
+      <UButton
+        icon="i-lucide-user-plus"
+        size="sm"
+        @click="showAdd = true"
+      >
         {{ t('users.add') }}
       </UButton>
     </div>
 
     <UCard class="anim-card">
-      <UTable :data="users || []" :columns="columns">
+      <UTable
+        :data="users || []"
+        :columns="columns"
+      >
         <template #username-cell="{ row }">
           <div class="flex items-center gap-2.5">
             <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-elevated">
-              <UIcon name="i-lucide-circle-user" class="h-3.5 w-3.5 text-muted" />
+              <UIcon
+                name="i-lucide-circle-user"
+                class="h-3.5 w-3.5 text-muted"
+              />
             </div>
             <span class="font-medium text-sm">{{ row.original.username }}</span>
           </div>
@@ -149,7 +163,12 @@ onMounted(() => {
               >
                 {{ t('common.save') }}
               </UButton>
-              <UButton size="xs" color="neutral" variant="ghost" @click="changePwdId = null">
+              <UButton
+                size="xs"
+                color="neutral"
+                variant="ghost"
+                @click="changePwdId = null"
+              >
                 {{ t('common.cancel') }}
               </UButton>
             </template>
@@ -168,23 +187,53 @@ onMounted(() => {
       </UTable>
     </UCard>
 
-    <UModal v-model:open="showAdd" :title="t('users.add')">
+    <UModal
+      v-model:open="showAdd"
+      :title="t('users.add')"
+    >
       <template #body>
         <div class="space-y-4">
-          <UFormField :label="t('common.username')" required>
-            <UInput v-model="addForm.username" icon="i-lucide-user" class="w-full" placeholder="johndoe" />
+          <UFormField
+            :label="t('common.username')"
+            required
+          >
+            <UInput
+              v-model="addForm.username"
+              icon="i-lucide-user"
+              class="w-full"
+              placeholder="johndoe"
+            />
           </UFormField>
-          <UFormField :label="t('common.password')" required>
-            <UInput v-model="addForm.password" type="password" icon="i-lucide-lock" class="w-full" />
+          <UFormField
+            :label="t('common.password')"
+            required
+          >
+            <UInput
+              v-model="addForm.password"
+              type="password"
+              icon="i-lucide-lock"
+              class="w-full"
+            />
           </UFormField>
           <UFormField :label="t('users.role')">
-            <USelect v-model="addForm.role" :items="roleOptions" value-key="value" label-key="label" class="w-full" />
+            <USelect
+              v-model="addForm.role"
+              :items="roleOptions"
+              value-key="value"
+              label-key="label"
+              class="w-full"
+            />
           </UFormField>
         </div>
       </template>
       <template #footer>
         <div class="flex justify-end gap-2">
-          <UButton color="neutral" variant="ghost" size="sm" @click="showAdd = false">
+          <UButton
+            color="neutral"
+            variant="ghost"
+            size="sm"
+            @click="showAdd = false"
+          >
             {{ t('common.cancel') }}
           </UButton>
           <UButton

@@ -37,7 +37,7 @@ export default defineEventHandler(async () => {
     .from(jobDestinations)
     .innerJoin(backupDestinations, eq(jobDestinations.destinationId, backupDestinations.id))
 
-  const destByJob = new Map<string, Array<{ id: string; name: string; type: string }>>()
+  const destByJob = new Map<string, Array<{ id: string, name: string, type: string }>>()
   for (const row of destRows) {
     if (!destByJob.has(row.jobId)) destByJob.set(row.jobId, [])
     destByJob.get(row.jobId)!.push({ id: row.id, name: row.name, type: row.type })

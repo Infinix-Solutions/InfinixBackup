@@ -82,7 +82,7 @@ const statCards = computed(() => [
 const isDark = computed(() => colorMode.value === 'dark')
 
 const barChartData = computed(() => {
-  const labels = chartData.value.map(d => {
+  const labels = chartData.value.map((d) => {
     const date = new Date(d.date)
     return date.toLocaleDateString('pl-PL', { weekday: 'short', day: 'numeric', month: 'short' })
   })
@@ -179,10 +179,20 @@ onMounted(() => {
   <div class="py-8 px-6 lg:px-8 space-y-6">
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-xl font-semibold tracking-tight">{{ t('dashboard.title') }}</h1>
-        <p class="text-sm text-muted mt-0.5">{{ t('dashboard.subtitle') }}</p>
+        <h1 class="text-xl font-semibold tracking-tight">
+          {{ t('dashboard.title') }}
+        </h1>
+        <p class="text-sm text-muted mt-0.5">
+          {{ t('dashboard.subtitle') }}
+        </p>
       </div>
-      <UButton icon="i-lucide-refresh-cw" color="neutral" variant="ghost" size="sm" @click="() => refresh()">
+      <UButton
+        icon="i-lucide-refresh-cw"
+        color="neutral"
+        variant="ghost"
+        size="sm"
+        @click="() => refresh()"
+      >
         {{ t('common.refresh') }}
       </UButton>
     </div>
@@ -199,7 +209,10 @@ onMounted(() => {
             <div class="flex items-start justify-between gap-2">
               <p class="text-[11px] font-medium text-muted uppercase tracking-wider leading-none">{{ card.label }}</p>
               <div :class="['shrink-0 flex h-8 w-8 items-center justify-center rounded-lg', card.iconBg]">
-                <UIcon :name="card.icon" :class="['h-4 w-4', card.iconColor]" />
+                <UIcon
+                  :name="card.icon"
+                  :class="['h-4 w-4', card.iconColor]"
+                />
               </div>
             </div>
             <p class="text-2xl font-bold tabular-nums leading-none tracking-tight">{{ card.value }}</p>
@@ -213,65 +226,125 @@ onMounted(() => {
         <template #header>
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="text-sm font-semibold">Aktywność backupów (7 dni)</h2>
-              <p class="text-xs text-muted mt-0.5">Liczba uruchomień z podziałem na sukces / błąd</p>
+              <h2 class="text-sm font-semibold">
+                Aktywność backupów (7 dni)
+              </h2>
+              <p class="text-xs text-muted mt-0.5">
+                Liczba uruchomień z podziałem na sukces / błąd
+              </p>
             </div>
-            <UBadge color="neutral" variant="subtle" size="sm" label="Ostatnie 7 dni" icon="i-lucide-calendar" />
+            <UBadge
+              color="neutral"
+              variant="subtle"
+              size="sm"
+              label="Ostatnie 7 dni"
+              icon="i-lucide-calendar"
+            />
           </div>
         </template>
         <div class="h-52">
-          <div v-if="!hasChartData" class="h-full flex flex-col items-center justify-center gap-2">
-            <UIcon name="i-lucide-bar-chart-2" class="h-8 w-8 text-muted" />
-            <p class="text-sm text-muted">Brak danych z ostatnich 7 dni</p>
+          <div
+            v-if="!hasChartData"
+            class="h-full flex flex-col items-center justify-center gap-2"
+          >
+            <UIcon
+              name="i-lucide-bar-chart-2"
+              class="h-8 w-8 text-muted"
+            />
+            <p class="text-sm text-muted">
+              Brak danych z ostatnich 7 dni
+            </p>
           </div>
-          <Bar v-else :data="barChartData" :options="barChartOptions" />
+          <Bar
+            v-else
+            :data="barChartData"
+            :options="barChartOptions"
+          />
         </div>
       </UCard>
 
       <UCard class="anim-chart">
         <template #header>
-          <h2 class="text-sm font-semibold">Szybkie akcje</h2>
+          <h2 class="text-sm font-semibold">
+            Szybkie akcje
+          </h2>
         </template>
         <div class="space-y-2">
-          <NuxtLink to="/jobs/new" class="flex items-center gap-3 p-3 rounded-lg border border-default hover:bg-elevated transition-colors group">
+          <NuxtLink
+            to="/jobs/new"
+            class="flex items-center gap-3 p-3 rounded-lg border border-default hover:bg-elevated transition-colors group"
+          >
             <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-violet-500/10 group-hover:bg-violet-500/20 transition-colors">
-              <UIcon name="i-lucide-plus-circle" class="h-4.5 w-4.5 text-violet-500" />
+              <UIcon
+                name="i-lucide-plus-circle"
+                class="h-4.5 w-4.5 text-violet-500"
+              />
             </div>
             <div class="min-w-0">
               <p class="text-sm font-medium">Nowe zadanie</p>
               <p class="text-xs text-muted truncate">Zaplanuj backup</p>
             </div>
-            <UIcon name="i-lucide-chevron-right" class="h-4 w-4 text-muted ml-auto shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <UIcon
+              name="i-lucide-chevron-right"
+              class="h-4 w-4 text-muted ml-auto shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+            />
           </NuxtLink>
-          <NuxtLink to="/sources/new" class="flex items-center gap-3 p-3 rounded-lg border border-default hover:bg-elevated transition-colors group">
+          <NuxtLink
+            to="/sources/new"
+            class="flex items-center gap-3 p-3 rounded-lg border border-default hover:bg-elevated transition-colors group"
+          >
             <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 group-hover:bg-blue-500/20 transition-colors">
-              <UIcon name="i-lucide-database" class="h-4.5 w-4.5 text-blue-500" />
+              <UIcon
+                name="i-lucide-database"
+                class="h-4.5 w-4.5 text-blue-500"
+              />
             </div>
             <div class="min-w-0">
               <p class="text-sm font-medium">Nowe źródło</p>
               <p class="text-xs text-muted truncate">Dodaj bazę lub pliki</p>
             </div>
-            <UIcon name="i-lucide-chevron-right" class="h-4 w-4 text-muted ml-auto shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <UIcon
+              name="i-lucide-chevron-right"
+              class="h-4 w-4 text-muted ml-auto shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+            />
           </NuxtLink>
-          <NuxtLink to="/destinations/new" class="flex items-center gap-3 p-3 rounded-lg border border-default hover:bg-elevated transition-colors group">
+          <NuxtLink
+            to="/destinations/new"
+            class="flex items-center gap-3 p-3 rounded-lg border border-default hover:bg-elevated transition-colors group"
+          >
             <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 group-hover:bg-emerald-500/20 transition-colors">
-              <UIcon name="i-lucide-hard-drive" class="h-4.5 w-4.5 text-emerald-500" />
+              <UIcon
+                name="i-lucide-hard-drive"
+                class="h-4.5 w-4.5 text-emerald-500"
+              />
             </div>
             <div class="min-w-0">
               <p class="text-sm font-medium">Nowe miejsce docelowe</p>
               <p class="text-xs text-muted truncate">S3, FTP, SFTP, lokalny</p>
             </div>
-            <UIcon name="i-lucide-chevron-right" class="h-4 w-4 text-muted ml-auto shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <UIcon
+              name="i-lucide-chevron-right"
+              class="h-4 w-4 text-muted ml-auto shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+            />
           </NuxtLink>
-          <NuxtLink to="/webhooks/new" class="flex items-center gap-3 p-3 rounded-lg border border-default hover:bg-elevated transition-colors group">
+          <NuxtLink
+            to="/webhooks/new"
+            class="flex items-center gap-3 p-3 rounded-lg border border-default hover:bg-elevated transition-colors group"
+          >
             <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
-              <UIcon name="i-lucide-webhook" class="h-4.5 w-4.5 text-amber-500" />
+              <UIcon
+                name="i-lucide-webhook"
+                class="h-4.5 w-4.5 text-amber-500"
+              />
             </div>
             <div class="min-w-0">
               <p class="text-sm font-medium">Nowy webhook</p>
               <p class="text-xs text-muted truncate">Discord, Slack, WhatsApp</p>
             </div>
-            <UIcon name="i-lucide-chevron-right" class="h-4 w-4 text-muted ml-auto shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <UIcon
+              name="i-lucide-chevron-right"
+              class="h-4 w-4 text-muted ml-auto shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+            />
           </NuxtLink>
         </div>
       </UCard>
@@ -281,29 +354,54 @@ onMounted(() => {
       <template #header>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
-            <h2 class="text-sm font-semibold">{{ t('dashboard.recent_runs') }}</h2>
+            <h2 class="text-sm font-semibold">
+              {{ t('dashboard.recent_runs') }}
+            </h2>
             <span class="inline-flex items-center gap-1.5 rounded-full bg-success-500/10 px-2.5 py-1 text-[11px] font-semibold text-success-600">
               <span class="h-1.5 w-1.5 rounded-full bg-success-500 animate-pulse" />
               {{ t('common.live') }}
             </span>
           </div>
-          <UButton to="/runs" size="sm" variant="ghost" color="neutral" trailing-icon="i-lucide-arrow-right">
+          <UButton
+            to="/runs"
+            size="sm"
+            variant="ghost"
+            color="neutral"
+            trailing-icon="i-lucide-arrow-right"
+          >
             {{ t('common.view_all') }}
           </UButton>
         </div>
       </template>
 
-      <div v-if="!stats.recentRuns.length" class="py-14 text-center">
+      <div
+        v-if="!stats.recentRuns.length"
+        class="py-14 text-center"
+      >
         <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-elevated">
-          <UIcon name="i-lucide-inbox" class="h-6 w-6 text-muted" />
+          <UIcon
+            name="i-lucide-inbox"
+            class="h-6 w-6 text-muted"
+          />
         </div>
-        <p class="text-sm font-medium mb-1">{{ t('dashboard.no_runs') }}</p>
-        <UButton to="/jobs/new" size="sm" icon="i-lucide-plus" class="mt-3">
+        <p class="text-sm font-medium mb-1">
+          {{ t('dashboard.no_runs') }}
+        </p>
+        <UButton
+          to="/jobs/new"
+          size="sm"
+          icon="i-lucide-plus"
+          class="mt-3"
+        >
           {{ t('dashboard.create_job') }}
         </UButton>
       </div>
 
-      <UTable v-else :data="stats.recentRuns" :columns="columns">
+      <UTable
+        v-else
+        :data="stats.recentRuns"
+        :columns="columns"
+      >
         <template #status-cell="{ row }">
           <UBadge
             :color="statusColors[row.original.status as string] || 'neutral'"
@@ -313,7 +411,10 @@ onMounted(() => {
           />
         </template>
         <template #jobName-cell="{ row }">
-          <NuxtLink :to="`/jobs/${row.original.jobId}`" class="font-medium text-sm hover:text-primary-500 transition-colors">
+          <NuxtLink
+            :to="`/jobs/${row.original.jobId}`"
+            class="font-medium text-sm hover:text-primary-500 transition-colors"
+          >
             {{ row.original.jobName }}
           </NuxtLink>
         </template>
