@@ -1,9 +1,9 @@
-import { webhooks } from '../../database/schema'
+import { webhooks, jobWebhooks } from '../../database/schema'
 
 export default defineEventHandler(async (event) => {
   await getAuthSession(event)
   const body = await readBody(event)
-  const { name, type, url, events, enabled, secret, chatId } = body
+  const { name, type, url, events, enabled, secret, chatId, sessionId, jobIds, messageTemplate } = body
 
   if (!name || !url || !type || !Array.isArray(events) || events.length === 0) {
     throw createError({ statusCode: 400, message: 'name, url, type and at least one event are required' })
@@ -20,9 +20,15 @@ export default defineEventHandler(async (event) => {
     events,
     enabled: enabled ?? true,
     secret: secret || null,
-    chatId: chatId || null
+    chatId: chatId || null,
+    sessionId: sessionId || null,
+    messageTemplate: messageTemplate || null
   }).returning()
 
+  if (Array.isArray(jobIds) && jobIds.length > 0) {
+    await db.insert(jobWebhooks).values(jobIds.map((jobId: string) => ({ jobId, webhookId: row!.id })))
+  }
+
   setResponseStatus(event, 201)
-  return row
+  return { ...row, jobIds: Array.isArray(jobIds) ? jobIds : [] }
 })

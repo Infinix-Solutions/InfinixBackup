@@ -220,9 +220,9 @@ export async function executeBackupJob(jobId: string): Promise<string> {
       .where(eq(backupJobs.id, jobId));
 
     dispatchWebhooks('backup.success', {
-      job: { id: job.id, name: job.name },
+      job: { id: job.id, name: job.name, nextRunAt: job.nextRunAt },
       run: { id: run.id, status: 'success', fileName, fileSizeBytes: sizeBytes, startedAt: run.startedAt, completedAt: new Date() }
-    }).catch(console.error);
+    }, jobId).catch(console.error);
 
     if (job.retentionDays > 0) {
       log(`Applying day-based retention (${job.retentionDays} days)...`);
@@ -252,9 +252,9 @@ export async function executeBackupJob(jobId: string): Promise<string> {
       .where(eq(backupJobs.id, jobId));
 
     dispatchWebhooks('backup.failed', {
-      job: { id: job.id, name: job.name },
+      job: { id: job.id, name: job.name, nextRunAt: job.nextRunAt },
       run: { id: run.id, status: 'failed', fileName: null, fileSizeBytes: null, startedAt: run.startedAt, completedAt: new Date(), errorMessage: errMsg }
-    }).catch(console.error);
+    }, jobId).catch(console.error);
 
     throw error;
   }

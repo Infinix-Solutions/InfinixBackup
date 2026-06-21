@@ -52,8 +52,8 @@ export default defineNuxtConfig({
   },
 
   sentry: {
-    org: "centrum-aktywnosci-seniora-as",
-    project: "backup-system",
+    org: "infinix-solutions",
+    project: "infinixbackup",
     /**
      * Ignore a next line, beacause a Sentry SDK don't implement in config types a "url" param for Self-Hosted instances
      */

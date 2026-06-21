@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/nuxt";
 Sentry.init({
   // If set up, you can use your runtime config here
   // dsn: useRuntimeConfig().public.sentry.dsn,
-  dsn: "https://a844512fd006371dfdb3b1356a6c6a07@sentry.infinix-solutions.com/12",
+  dsn: "https://942e66b9b264fb4f7df609352bb8c340@sentry.infinix-solutions.com/13",
 
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
@@ -18,12 +18,7 @@ Sentry.init({
   replaysOnErrorSampleRate: 1.0,
 
   // If you don't want to use Session Replay, just remove the line below:
-  integrations: [
-    Sentry.replayIntegration({
-      maskAllText: false,
-      maskAllInputs: false,
-    }),
-  ],
+  integrations: [Sentry.replayIntegration()],
 
   // Enable logs to be sent to Sentry
   enableLogs: true,

@@ -40,10 +40,12 @@ const statusIconClass: Record<string, string> = {
 const search = ref('')
 const statusFilter = ref<'all' | RunStatus>('all')
 const deleteTarget = ref<ApiRun | null>(null)
+const deleteOpen = ref(false)
 const deleting = ref(false)
 
 async function confirmDelete(run: ApiRun) {
   deleteTarget.value = run
+  deleteOpen.value = true
 }
 
 async function deleteRun() {
@@ -53,6 +55,7 @@ async function deleteRun() {
     await $fetch(`/api/runs/${deleteTarget.value.id}`, { method: 'DELETE' })
     toast.add({ title: t('runs.deleted'), color: 'success', icon: 'i-lucide-check-circle' })
     deleteTarget.value = null
+    deleteOpen.value = false
     refresh()
   } catch (err: unknown) {
     const msg = (err as { data?: { message?: string } })?.data?.message || 'Delete failed'
@@ -78,7 +81,7 @@ const filteredRuns = computed(() => {
     data = data.filter(r =>
       (r.jobName?.toLowerCase().includes(q) ?? false) ||
       (r.sourceName?.toLowerCase().includes(q) ?? false) ||
-      (r.destinationName?.toLowerCase().includes(q) ?? false)
+      r.destinationNames.some(d => d.toLowerCase().includes(q))
     )
   }
   return data
@@ -257,7 +260,7 @@ onMounted(() => {
       </UTable>
     </UCard>
 
-    <UModal v-model:open="deleteTarget" :title="t('runs.delete_title')">
+    <UModal v-model:open="deleteOpen" :title="t('runs.delete_title')">
       <template #body>
         <p class="text-sm text-muted">{{ t('runs.delete_msg') }}</p>
         <p v-if="deleteTarget?.fileName" class="mt-2 text-xs font-mono text-muted bg-elevated rounded px-2 py-1">{{ deleteTarget.fileName }}</p>

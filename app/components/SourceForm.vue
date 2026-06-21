@@ -41,7 +41,7 @@ onMounted(() => {
 })
 
 watch(selectedSshId, (id) => {
-  runProbe(id)
+  if (id) runProbe(id)
   if (mounted) form.config = {}
 })
 

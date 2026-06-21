@@ -2,11 +2,7 @@ name: infinix-backup
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: production
-    image: infinix-backup:latest
+    image: ghcr.io/infinix-solutions/infinixbackup:latest
     restart: unless-stopped
     ports:
       - "${NUXT_PORT:-3000}:3000"

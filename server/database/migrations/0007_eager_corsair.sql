@@ -1,0 +1,1 @@
+ALTER TABLE "webhooks" ADD COLUMN "session_id" varchar(255);

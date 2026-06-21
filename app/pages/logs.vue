@@ -58,7 +58,7 @@ async function fetchLogs(since?: number) {
     } else {
       logs.value = data
     }
-    if (data.length > 0) lastId.value = data[data.length - 1].id
+    if (data.length > 0) lastId.value = data.at(-1)!.id
     if (autoScroll.value) scrollToBottom()
   } catch {
   }

@@ -210,6 +210,9 @@ declare interface ApiWebhook {
   enabled: boolean
   secret: string | null
   chatId: string | null
+  sessionId: string | null
+  messageTemplate: string | null
+  jobIds: string[]
   createdAt: string
   updatedAt: string
 }
@@ -222,6 +225,9 @@ declare interface WebhookFormData {
   enabled: boolean
   secret: string
   chatId: string
+  sessionId: string
+  messageTemplate: string
+  jobIds: string[]
 }
 
 declare interface JobFormData {

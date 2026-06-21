@@ -24,6 +24,8 @@ RUN pnpm install --frozen-lockfile --prod=false
 # ─── Build stage ────────────────────────────────────────────────────────────
 FROM base AS builder
 WORKDIR /app
+ARG SENTRY_AUTH_TOKEN
+ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN pnpm run build

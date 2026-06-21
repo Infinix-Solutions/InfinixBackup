@@ -153,6 +153,7 @@ export const backupJobsRelations = relations(backupJobs, ({ one, many }) => ({
     references: [backupSources.id]
   }),
   jobDestinations: many(jobDestinations),
+  jobWebhooks: many(jobWebhooks),
   runs: many(backupRuns)
 }))
 
@@ -185,9 +186,16 @@ export const webhooks = pgTable('webhooks', {
   enabled: boolean('enabled').notNull().default(true),
   secret: varchar('secret', { length: 255 }),
   chatId: varchar('chat_id', { length: 255 }),
+  sessionId: varchar('session_id', { length: 255 }),
+  messageTemplate: text('message_template'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow()
 })
+
+export const jobWebhooks = pgTable('job_webhooks', {
+  jobId: uuid('job_id').notNull().references(() => backupJobs.id, { onDelete: 'cascade' }),
+  webhookId: uuid('webhook_id').notNull().references(() => webhooks.id, { onDelete: 'cascade' }),
+}, (t) => [primaryKey({ columns: [t.jobId, t.webhookId] })])
 
 export type SshConnection = typeof sshConnections.$inferSelect
 export type NewSshConnection = typeof sshConnections.$inferInsert
@@ -201,5 +209,15 @@ export type JobDestination = typeof jobDestinations.$inferSelect
 export type NewJobDestination = typeof jobDestinations.$inferInsert
 export type BackupRun = typeof backupRuns.$inferSelect
 export type NewBackupRun = typeof backupRuns.$inferInsert
+export const webhooksRelations = relations(webhooks, ({ many }) => ({
+  jobWebhooks: many(jobWebhooks)
+}))
+
+export const jobWebhooksRelations = relations(jobWebhooks, ({ one }) => ({
+  job: one(backupJobs, { fields: [jobWebhooks.jobId], references: [backupJobs.id] }),
+  webhook: one(webhooks, { fields: [jobWebhooks.webhookId], references: [webhooks.id] })
+}))
+
 export type Webhook = typeof webhooks.$inferSelect
+export type JobWebhook = typeof jobWebhooks.$inferSelect
 export type NewWebhook = typeof webhooks.$inferInsert
