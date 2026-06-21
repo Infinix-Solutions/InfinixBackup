@@ -10,16 +10,12 @@ RUN apk add --no-cache \
     make \
     g++
 
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable pnpm
-
 WORKDIR /app
 
 # ─── Dependencies stage ─────────────────────────────────────────────────────
 FROM base AS deps
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile --prod=false
+COPY package.json package-lock.json ./
+RUN npm ci
 
 # ─── Build stage ────────────────────────────────────────────────────────────
 FROM base AS builder
@@ -28,7 +24,7 @@ ARG SENTRY_AUTH_TOKEN
 ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN pnpm run build
+RUN npm run build
 
 # ─── Production stage ───────────────────────────────────────────────────────
 FROM base AS production
