@@ -15,6 +15,7 @@ import { createMongoBackup, createDockerMongoBackup } from './backup/mongo'
 import {
   createDockerPostgresBackup,
   createDockerMysqlBackup,
+  createDockerMariadbBackup,
   createDockerFolderBackup
 } from './backup/docker'
 import { createFilesBackup } from './backup/files'
@@ -77,6 +78,8 @@ function createBackupStream(
       return createDockerPostgresBackup(cfg as unknown as DockerPostgresConfig, compression, ssh)
     case 'docker_mysql':
       return createDockerMysqlBackup(cfg as unknown as DockerMysqlConfig, compression, ssh)
+    case 'docker_mariadb':
+      return createDockerMariadbBackup(cfg as unknown as DockerMysqlConfig, compression, ssh)
     case 'docker_mongodb':
       return createDockerMongoBackup(cfg as unknown as DockerMongoConfig, compression, ssh)
     case 'docker_folder':

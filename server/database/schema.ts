@@ -31,6 +31,7 @@ export const sourceTypeEnum = pgEnum('source_type', [
   'files',
   'docker_postgresql',
   'docker_mysql',
+  'docker_mariadb',
   'docker_mongodb',
   'docker_folder'
 ])

@@ -107,6 +107,7 @@ export type SourceType
     | 'files'
     | 'docker_postgresql'
     | 'docker_mysql'
+    | 'docker_mariadb'
     | 'docker_mongodb'
     | 'docker_folder'
 export type DestinationType = 's3' | 'ftp' | 'sftp' | 'local'

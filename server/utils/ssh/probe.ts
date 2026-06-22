@@ -5,6 +5,7 @@ export interface SshProbeResult {
   docker: boolean;
   postgres: boolean;
   mysql: boolean;
+  mariadb: boolean;
   mongo: boolean;
   containers: string[];
 }
@@ -15,6 +16,7 @@ const PROBE_CMD = `
 
 (command -v pg_dump > /dev/null 2>&1 && echo "postgres=1" || echo "postgres=0");
 (command -v mysqldump > /dev/null 2>&1 && echo "mysql=1" || echo "mysql=0");
+(command -v mariadb-dump > /dev/null 2>&1 && echo "mariadb=1" || echo "mariadb=0");
 (command -v mongodump > /dev/null 2>&1 && echo "mongo=1" || echo "mongo=0");
 `.trim();
 
@@ -25,6 +27,7 @@ export async function probeServer(config: SshConfig): Promise<SshProbeResult> {
     docker: false,
     postgres: false,
     mysql: false,
+    mariadb: false,
     mongo: false,
     containers: [],
   };
@@ -34,7 +37,8 @@ export async function probeServer(config: SshConfig): Promise<SshProbeResult> {
     if (!key) continue;
     if (key === "docker") result.docker = val === "1";
     if (key === "postgres") result.postgres = val === "1";
-    if (key === "mysql" || key === "mariadb") result.mysql = val === "1";
+    if (key === "mysql") result.mysql = val === "1";
+    if (key === "mariadb") result.mariadb = val === "1";
     if (key === "mongo") result.mongo = val === "1";
     if (key === "container" && val) result.containers.push(val);
   }

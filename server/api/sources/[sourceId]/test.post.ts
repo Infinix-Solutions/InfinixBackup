@@ -37,6 +37,7 @@ export default defineEventHandler(async (event) => {
         await testDockerContainer((cfg as unknown as DockerPostgresConfig).containerName)
         break
       case 'docker_mysql':
+      case 'docker_mariadb':
         await testDockerContainer((cfg as unknown as DockerPostgresConfig).containerName)
         break
       case 'docker_mongodb':

@@ -77,6 +77,7 @@ const sourceTypes = computed(() => {
     { label: t('sources.form.type_files'), value: 'files', icon: 'i-lucide-folder', needsDocker: false, needsPostgres: false, needsMysql: false, needsMongo: false },
     { label: 'Docker → PostgreSQL', value: 'docker_postgresql', icon: 'i-simple-icons-docker', needsDocker: true, needsPostgres: false, needsMysql: false, needsMongo: false },
     { label: 'Docker → MySQL', value: 'docker_mysql', icon: 'i-simple-icons-docker', needsDocker: true, needsPostgres: false, needsMysql: false, needsMongo: false },
+    { label: 'Docker → MariaDB', value: 'docker_mariadb', icon: 'i-simple-icons-docker', needsDocker: true, needsPostgres: false, needsMysql: false, needsMongo: false },
     { label: 'Docker → MongoDB', value: 'docker_mongodb', icon: 'i-simple-icons-docker', needsDocker: true, needsPostgres: false, needsMysql: false, needsMongo: false },
     { label: 'Docker → Folder / Volume', value: 'docker_folder', icon: 'i-simple-icons-docker', needsDocker: true, needsPostgres: false, needsMysql: false, needsMongo: false }
   ]
@@ -91,7 +92,7 @@ const sourceTypes = computed(() => {
 }) as ComputedRef<{ label: string, value: string, icon: string }[]>
 
 const isDocker = computed(() =>
-  ['docker_postgresql', 'docker_mysql', 'docker_mongodb', 'docker_folder'].includes(form.type)
+  ['docker_postgresql', 'docker_mysql', 'docker_mariadb', 'docker_mongodb', 'docker_folder'].includes(form.type)
 )
 const needsDb = computed(() =>
   !['files', 'docker_folder'].includes(form.type)
@@ -405,7 +406,7 @@ function handleSubmit() {
     </template>
 
     <!-- Docker MySQL: db credentials -->
-    <template v-if="form.type === 'docker_mysql'">
+    <template v-if="form.type === 'docker_mysql' || form.type === 'docker_mariadb'">
       <UFormField
         :label="t('common.database')"
         name="database"

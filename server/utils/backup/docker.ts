@@ -84,6 +84,32 @@ export function createDockerMysqlBackup(
   return pipeWithCompression(proc, compression, 'docker mysqldump')
 }
 
+export function createDockerMariadbBackup(
+  config: DockerMysqlConfig,
+  compression: CompressionType,
+  ssh?: SshConnectionConfig
+): Readable {
+  const dumpArgs = [
+    `-u${config.username}`, `-p${config.password}`,
+    '--single-transaction', '--routines', '--triggers', config.database
+  ]
+  if (config.extraArgs) dumpArgs.push(...config.extraArgs.split(' ').filter(Boolean))
+
+  if (ssh) {
+    const gzip = compression === 'gzip' || compression === 'zip' ? '| gzip' : ''
+    const inner = ['mariadb-dump', ...dumpArgs].map(shEscape).join(' ')
+    const cmd = `docker exec ${shEscape(config.containerName)} ${inner} ${gzip}`.trim()
+    return sshExec(cmd, ssh)
+  }
+
+  const proc = spawn('docker', ['exec', config.containerName, 'mariadb-dump', ...dumpArgs])
+  proc.stderr.on('data', (d: Buffer) => {
+    const msg = d.toString()
+    if (!msg.includes('Using a password on the command line')) console.error('[docker mariadb-dump stderr]', msg)
+  })
+  return pipeWithCompression(proc, compression, 'docker mariadb-dump')
+}
+
 export function createDockerFolderBackup(
   config: DockerFolderConfig,
   compression: CompressionType,

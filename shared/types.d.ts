@@ -5,6 +5,7 @@ declare type SourceType
     | 'files'
     | 'docker_postgresql'
     | 'docker_mysql'
+    | 'docker_mariadb'
     | 'docker_mongodb'
     | 'docker_folder'
 
