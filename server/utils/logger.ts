@@ -29,7 +29,10 @@ try {
     for (let i = lines.length - 1; i >= 0; i--) {
       try {
         const entry = JSON.parse(lines[i]!)
-        if (typeof entry.id === 'number') { counter = entry.id; break }
+        if (typeof entry.id === 'number') {
+          counter = entry.id
+          break
+        }
       } catch { /* skip malformed */ }
     }
   }
@@ -87,7 +90,9 @@ export function getLogs(limit = 500, sinceId?: number): LogEntry[] {
     const lines = content.trim().split('\n').filter(Boolean)
     const entries: LogEntry[] = []
     for (const line of lines) {
-      try { entries.push(JSON.parse(line)) } catch { /* skip malformed line */ }
+      try {
+        entries.push(JSON.parse(line))
+      } catch { /* skip malformed line */ }
     }
     const filtered = sinceId != null ? entries.filter(e => e.id > sinceId) : entries
     return filtered.slice(-limit)
@@ -100,6 +105,8 @@ export function clearLogs() {
   counter = 0
   lineCount = 0
   if (fileLoggingReady) {
-    try { writeFileSync(LOG_FILE, '') } catch { /* ignore */ }
+    try {
+      writeFileSync(LOG_FILE, '')
+    } catch { /* ignore */ }
   }
 }

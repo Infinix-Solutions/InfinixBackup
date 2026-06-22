@@ -2,21 +2,25 @@ export function nextCronDate(expression: string): Date | null {
   try {
     const parts = expression.trim().split(/\s+/)
     if (parts.length !== 5) return null
-    const [minExpr, hourExpr, domExpr, monthExpr, dowExpr] = parts
+    const [minExpr, hourExpr, domExpr, monthExpr, dowExpr] = parts as [string, string, string, string, string]
 
     function matches(val: number, expr: string, min: number, max: number): boolean {
       if (expr === '*') return true
       for (const part of expr.split(',')) {
         if (part.includes('/')) {
-          const [rangeStr, stepStr] = part.split('/')
-          const step = parseInt(stepStr)
-          const from = rangeStr === '*' ? min : parseInt(rangeStr.split('-')[0] ?? '0')
-          const to = rangeStr.includes('-') ? parseInt(rangeStr.split('-')[1] ?? String(max)) : max
+          const idx = part.indexOf('/')
+          const rangeStr = part.slice(0, idx)
+          const step = parseInt(part.slice(idx + 1))
+          const dashIdx = rangeStr.indexOf('-')
+          const from = rangeStr === '*' ? min : parseInt(dashIdx >= 0 ? rangeStr.slice(0, dashIdx) : rangeStr)
+          const to = dashIdx >= 0 ? parseInt(rangeStr.slice(dashIdx + 1)) : max
           for (let v = from; v <= to; v += step) {
             if (v === val) return true
           }
         } else if (part.includes('-')) {
-          const [a, b] = part.split('-').map(Number)
+          const dashIdx = part.indexOf('-')
+          const a = parseInt(part.slice(0, dashIdx))
+          const b = parseInt(part.slice(dashIdx + 1))
           if (val >= a && val <= b) return true
         } else {
           if (parseInt(part) === val) return true
