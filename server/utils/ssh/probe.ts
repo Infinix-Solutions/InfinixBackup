@@ -1,13 +1,13 @@
-import { sshExecString } from "./exec";
-import type { SshConfig } from "./exec";
+import { sshExecString } from './exec'
+import type { SshConfig } from './exec'
 
 export interface SshProbeResult {
-  docker: boolean;
-  postgres: boolean;
-  mysql: boolean;
-  mariadb: boolean;
-  mongo: boolean;
-  containers: string[];
+  docker: boolean
+  postgres: boolean
+  mysql: boolean
+  mariadb: boolean
+  mongo: boolean
+  containers: string[]
 }
 
 const PROBE_CMD = `
@@ -16,10 +16,10 @@ const PROBE_CMD = `
 (command -v mysqldump > /dev/null 2>&1 && echo "mysql=1" || echo "mysql=0");
 (command -v mariadb-dump > /dev/null 2>&1 && echo "mariadb=1" || echo "mariadb=0");
 (command -v mongodump > /dev/null 2>&1 && echo "mongo=1" || echo "mongo=0");
-`.trim();
+`.trim()
 
 export async function probeServer(config: SshConfig): Promise<SshProbeResult> {
-  const output = await sshExecString(PROBE_CMD, config);
+  const output = await sshExecString(PROBE_CMD, config)
 
   const result: SshProbeResult = {
     docker: false,
@@ -27,19 +27,19 @@ export async function probeServer(config: SshConfig): Promise<SshProbeResult> {
     mysql: false,
     mariadb: false,
     mongo: false,
-    containers: [],
-  };
-
-  for (const line of output.split("\n")) {
-    const [key, val] = line.trim().split("=");
-    if (!key) continue;
-    if (key === "docker") result.docker = val === "1";
-    if (key === "postgres") result.postgres = val === "1";
-    if (key === "mysql") result.mysql = val === "1";
-    if (key === "mariadb") result.mariadb = val === "1";
-    if (key === "mongo") result.mongo = val === "1";
-    if (key === "container" && val) result.containers.push(val);
+    containers: []
   }
 
-  return result;
+  for (const line of output.split('\n')) {
+    const [key, val] = line.trim().split('=')
+    if (!key) continue
+    if (key === 'docker') result.docker = val === '1'
+    if (key === 'postgres') result.postgres = val === '1'
+    if (key === 'mysql') result.mysql = val === '1'
+    if (key === 'mariadb') result.mariadb = val === '1'
+    if (key === 'mongo') result.mongo = val === '1'
+    if (key === 'container' && val) result.containers.push(val)
+  }
+
+  return result
 }

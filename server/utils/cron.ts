@@ -31,11 +31,11 @@ export function nextCronDate(expression: string): Date | null {
 
     for (let i = 0; i < 525960; i++) {
       if (
-        matches(d.getMonth() + 1, monthExpr, 1, 12) &&
-        matches(d.getDate(), domExpr, 1, 31) &&
-        matches(d.getDay(), dowExpr, 0, 6) &&
-        matches(d.getHours(), hourExpr, 0, 23) &&
-        matches(d.getMinutes(), minExpr, 0, 59)
+        matches(d.getMonth() + 1, monthExpr, 1, 12)
+        && matches(d.getDate(), domExpr, 1, 31)
+        && matches(d.getDay(), dowExpr, 0, 6)
+        && matches(d.getHours(), hourExpr, 0, 23)
+        && matches(d.getMinutes(), minExpr, 0, 59)
       ) {
         return new Date(d)
       }
