@@ -16,7 +16,7 @@ services:
     volumes:
       - backup_data:/var/backups
       - ./data:/app/data
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
       - /:/host:ro   # host filesystem (read-only) — use /host/path/to/dir as source path
       - ssh_keys:/home/nuxt/.ssh:ro
     depends_on:

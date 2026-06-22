@@ -4,6 +4,7 @@ import { backupJobs } from '../database/schema'
 import { useDB } from '../utils/db'
 import { executeBackupJob } from '../utils/executor'
 import { applyRetentionAll } from '../utils/retention'
+import { nextCronDate } from '../utils/cron'
 
 type ScheduledTask = ReturnType<typeof cron.schedule>
 
@@ -85,6 +86,8 @@ export function scheduleJob(jobId: string, schedule: string) {
     return
   }
 
+  const db = useDB()
+
   const task = cron.schedule(schedule, async () => {
     console.log(`[scheduler] Triggering job ${jobId}`)
     try {
@@ -92,7 +95,18 @@ export function scheduleJob(jobId: string, schedule: string) {
     } catch (err) {
       console.error(`[scheduler] Job ${jobId} failed:`, err)
     }
+    const nextAt = nextCronDate(schedule)
+    await db.update(backupJobs)
+      .set({ nextRunAt: nextAt, updatedAt: new Date() })
+      .where(eq(backupJobs.id, jobId))
+      .catch(() => {})
   })
+
+  const nextAt = nextCronDate(schedule)
+  db.update(backupJobs)
+    .set({ nextRunAt: nextAt, updatedAt: new Date() })
+    .where(eq(backupJobs.id, jobId))
+    .catch(() => {})
 
   scheduler.set(jobId, task)
   console.log(`[scheduler] Scheduled job ${jobId}: ${schedule}`)

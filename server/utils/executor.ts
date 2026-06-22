@@ -41,6 +41,7 @@ import type {
 } from './types'
 import type { Readable } from 'stream'
 import { logger } from './logger'
+import { nextCronDate } from './cron'
 
 function getExtension(type: string, compression: CompressionType): string {
   let base: string
@@ -223,7 +224,7 @@ export async function executeBackupJob(jobId: string): Promise<string> {
       .where(eq(backupJobs.id, jobId))
 
     dispatchWebhooks('backup.success', {
-      job: { id: job.id, name: job.name, nextRunAt: job.nextRunAt },
+      job: { id: job.id, name: job.name, nextRunAt: nextCronDate(job.schedule) },
       run: { id: run.id, status: 'success', fileName, fileSizeBytes: sizeBytes, startedAt: run.startedAt, completedAt: new Date() }
     }, jobId).catch(console.error)
 
@@ -255,7 +256,7 @@ export async function executeBackupJob(jobId: string): Promise<string> {
       .where(eq(backupJobs.id, jobId))
 
     dispatchWebhooks('backup.failed', {
-      job: { id: job.id, name: job.name, nextRunAt: job.nextRunAt },
+      job: { id: job.id, name: job.name, nextRunAt: nextCronDate(job.schedule) },
       run: { id: run.id, status: 'failed', fileName: null, fileSizeBytes: null, startedAt: run.startedAt, completedAt: new Date(), errorMessage: errMsg }
     }, jobId).catch(console.error)
 

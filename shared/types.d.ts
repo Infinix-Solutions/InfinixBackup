@@ -182,6 +182,7 @@ declare interface SshProbeResult {
   docker: boolean
   postgres: boolean
   mysql: boolean
+  mariadb: boolean
   mongo: boolean
   containers: string[]
 }

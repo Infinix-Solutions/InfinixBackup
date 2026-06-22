@@ -11,9 +11,7 @@ export interface SshProbeResult {
 }
 
 const PROBE_CMD = `
-(docker info > /dev/null 2>&1 && echo "docker=1" || echo "docker=0");
-
-
+(docker info > /dev/null 2>&1 && echo "docker=1" && docker ps --format 'container={{.Names}}' 2>/dev/null || echo "docker=0");
 (command -v pg_dump > /dev/null 2>&1 && echo "postgres=1" || echo "postgres=0");
 (command -v mysqldump > /dev/null 2>&1 && echo "mysql=1" || echo "mysql=0");
 (command -v mariadb-dump > /dev/null 2>&1 && echo "mariadb=1" || echo "mariadb=0");
