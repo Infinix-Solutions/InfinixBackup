@@ -101,7 +101,7 @@ watch(autoScroll, (v) => {
           Server Logs
         </h1>
         <p class="text-sm text-muted mt-0.5">
-          Backend log stream (last 2000 entries, in-memory)
+          Backend log stream (last 10 000 entries, from file)
         </p>
       </div>
       <div class="flex items-center gap-2">
